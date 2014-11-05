@@ -1,0 +1,58 @@
+Hello Ernst,
+
+Here is the technical test for you !
+
+Scenario:
+	A company has a an R&D project to explore a web-sockets module-based architecture using NodeJS. 
+
+Criteria to follow are the following:
+
+	1 - server-client communication uses only JSON. 
+		Client must be fully independent in creating user interface.
+		The server does not push HTML fragments. 
+		The server data-transmission technology should allow an easy interface with mobile clients 
+		that could be native, web or hybrid. (for this test we only test a web client)
+	2 - Qunit must be used to unit test the client side connecting to the server with a web socket (asynchronously).
+	3 - Server side can use express in conjunction with with ws (https://www.npmjs.org/package/ws) and NOT socket.IO.
+	4 - client side javascript does not use any abstraction web socket libraries but pure native web socket object. 
+	5 - no template libraries (ex: moustache, brackets or alike). Web-client must be pure jQuery.
+	6 - no Bootstrap pollution. Just pure jQuery/javascript and handmade CSS.
+
+The project should be able to:
+
+	1 - client connects to server
+	2 - server registers the client and store it into a connection list to be able to reopen a connection 
+		if the client disconnects (page refresh, browser close and reopens).
+	3 - client send a simple hello message with his name
+	4 - server responds with a welcome message using the client username.
+	5 - client disconnect and reconnect and the server send a welcome back message recognising the client 
+		from the previous connection id.
+
+PS: up to you to decide if local storage or cookies should be used to store client state.
+	One option is also to use javascript fingerprint. 
+
+A plus will be:
+
+	1 - SCSS instead of SCSS. 
+	2 - Code documentation with YUIDoc http://yui.github.io/yuidoc/ or similar for both client side and server side.
+	3 - Unit testing for client side and server side.
+	4 - NodeJS server implements a RESTful and Web-socket servers into one, so that I can use standard ajax or web sockets.
+
+Schedule:
+	Working 3 hour per day for 5 days should be enough to achieve the objectives. 
+	If you need more time just let me know. 
+
+Let me know when you plan to start, also with Emilia we are looking for a spot in our weekly schedule so that you can come to visit us.
+
+Cheers,
+Marco
+
+Genioo
+Marco Falsitta
+
+Genioo AG
+	Bundesplatz 1
+	CH-6300 Zug
+	   Tel: +41 41 410 72 72
+	Mobile: +41 79 504 89 38
+	   Web: www.genioo.com

@@ -1,0 +1,24 @@
+
+# -------------------------------------------------------------------------------------------------
+# NPM
+# -------------------------------------------------------------------------------------------------
+
+npm install -g nodemon
+npm install -g gulp
+
+# genioo/src/
+
+npm install --save express
+npm install --save body-parser
+npm install --save ws
+npm install --save node-uuid
+
+npm install --save-dev gulp
+npm install --save-dev gulp-filter
+npm install --save-dev gulp-sass
+
+npm install --save-dev qunitjs
+
+# -------------------------------------------------------------------------------------------------
+# END
+# -------------------------------------------------------------------------------------------------

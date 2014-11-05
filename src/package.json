@@ -1,0 +1,31 @@
+{
+  "name": "genioo-http-websocket-server",
+  "version": "0.0.1",
+  "description": "genioo REST & WebSocket Service",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha ../tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etangreal/genioo.git"
+  },
+  "author": "Ernst Salzmann",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/etangreal/genioo/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "express": "^4.10.1",
+    "gulp": "^3.8.10",
+    "node-uuid": "^1.4.1",
+    "ws": "^0.4.32"
+  },
+  "devDependencies": {
+    "gulp-filter": "^1.0.2",
+    "gulp-sass": "^1.2.2",
+    "qunitjs": "^1.15.0"
+  }
+}

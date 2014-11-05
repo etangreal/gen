@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+    	<link rel="stylesheet" type="text/css" href="index.html.css">
+    	<link rel="stylesheet" type="text/css" href="css/qunit-1.15.0.css">
+    </head>
+    
+	<body>
+		<div>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<strong>NAME:</strong> <input type="text" id="name">
+		<div>
+
+		<ul class='tabs'>
+			<li><a href='#wsTab'>Web Sockets</a></li>
+		    <li><a href='#httpTab'>REST</a></li>
+		</ul>
+
+		<div>
+			<div id='wsTab'>
+				<div>
+					<span> Web Socket Support: </span> <span id="supported"></span>
+				</div>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;Host: <input type="text" id="wsHost">
+				<button type="button" id="wsConnect">connect</button>
+				<button type="button" id="wsPing">send ping</button>
+				<button type="button" id="clearStatus">clear status</button>
+			</div>
+			<div id='httpTab'>
+				<div>
+					<span> RESTful Web Services </span>
+				</div>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;Host: <input type="text" id="httpHost">
+				<button type="button" id="httpConnect">connect</button>
+				<button type="button" id="httpPing">send ping</button>
+				<button type="button" id="clearStatus">clear status</button>
+			</div>
+		</div>
+		<div>
+			<div id="status" class="status">&nbsp;</div>
+		</div>
+	</body>
+
+	<script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/sock.js"></script>
+
+    <script src="index.html.js"></script>
+</html>
