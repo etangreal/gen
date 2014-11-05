@@ -18,4 +18,11 @@ nodemon server
 
 http://localhost:8080
 
+# EDITING CODE
+
+cd src 
+
+gulp &
+nodemon server
+
 # END
