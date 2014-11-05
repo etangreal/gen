@@ -5,24 +5,28 @@ Testing WebSocket &amp; RESTful Service
 
 # SETUP
 
-npm install -g nodemon
-npm install -g gulp
+	npm install -g nodemon
+	npm install -g gulp
 
-cd src && npm install
+	cd src && npm install
 
 # RUN
 
-nodemon server
+	nodemon server
 
 # VIEW
 
-http://localhost:8080
+	http://localhost:8080
+
+# VIEW TESTS
+
+	http://localhost:8080/test.html
 
 # EDITING CODE
 
-cd src 
+	cd src 
 
-gulp &
-nodemon server
+	gulp &
+	nodemon server
 
 # END
