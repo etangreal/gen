@@ -5,6 +5,7 @@
 
 var util = require('../public/js/util').Util;
 var uuid = require('node-uuid');
+var store = require('./storage');
 
 // ------------------------------------------------------------------------------------------------
 // MODULE
@@ -20,7 +21,7 @@ var self = module.exports = {
 		var pkg = util.pack(msg);
 		self._ws.send(pkg);
 
-		self.status('Websocket: Message sent...', pkg);
+		self.status('(WebSocket): Message sent...', pkg);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ var self = module.exports = {
 		console.log(prefix);
 
 		if (msg && msg !== '')
-			console.log(msg);
+			console.log(' --->', msg);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ var self = module.exports = {
 	user: {
 
 		register: function(msg) {
-			self.status('WebSocket: REGISTER request recieved...');
+			self.status('(WebSocket): REGISTER request recieved...');
 
 			var name = msg.msg;
 			var token = uuid.v1();
@@ -84,12 +85,21 @@ var self = module.exports = {
 		// ----------------------------------------------------------------------------------------
 
 		greet: function(msg) {
-			self.status('WebSocket: GREET recieved...');
+			self.status('(WebSocket): GREETing recieved...');
+
+			var name = store.find( msg.token );
+			var token = name ? msg.token : uuid.v1();
+
+			if(!name) 
+				store.add(token, msg.msg);
+
+			var hello = 'Hello ' + msg.name + '!';
+				hello += name ?  ' welcome back!' : ' please to meet you :)';
 
 			var reply = {
-				  msg: 'hi',
+				  msg: hello,
 			 endpoint: '/user/greet',
-				token: null,
+				token: token,
 				error: null
 			};
 
@@ -99,12 +109,12 @@ var self = module.exports = {
 		// ----------------------------------------------------------------------------------------
 
 		ping: function(msg) {
-			self.status('WebSocket: PING recieved...');
+			self.status('(WebSocket): PING recieved...');
 
 			var reply = {
 				  msg: 'pong',
 			 endpoint: '/user/ping',
-				token: null,
+				token: msg.token,
 				error: null
 			};
 
@@ -116,12 +126,12 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	unknown: function(msg) {
-		self.status('WebSocket: UNKNOWN message from Client... ');
+		self.status('(WebSocket): UNKNOWN message from Client... ');
 
 			var reply = {
-				  msg: 'Unknown message',
+				  msg: 'Unknown message: ' + msg.msg + ' with endpoint: ' + msg.endpoint,
 			 endpoint: '/unknown',
-				token: null,
+				token: msg.token,
 				error: null
 			};
 
@@ -133,7 +143,7 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onConnect: function(ws) { //ws: WebSocket
-		self.status('WebSocket: Client Connected...');
+		self.status('(WebSocket): Client Connected...');
 		self._ws = ws;
 
 		var id = null; //= self.poll(ws);
@@ -148,14 +158,14 @@ var self = module.exports = {
 		var pkg = MsgEvt.data
 		var msg = util.unpack(pkg);
 
-		self.status('Websocket: Message Recieved...', msg);
+		self.status('(WebSocket): Message Recieved...', pkg);
 		self.route(msg);   
 	},
 
 	// --------------------------------------------------------------------------------------------
 
 	onError: function(err) {
-		self.status('WebSocket: Connection Error...', err.message);
+		self.status('(WebSocket): Connection Error...', err.message);
 
 		//ToDo: stop polling...
 	},
@@ -163,7 +173,7 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onClose: function() {
-		self.status('WebSocket: Connection Closed...', '');
+		self.status('(WebSocket): Connection Closed...', '');
 
 		// self.status('Server: Stop Polling...');
 		// clearInterval(this.id);
@@ -175,7 +185,7 @@ var self = module.exports = {
 
 	/** /
 	poll: function(ws) {
-		self.status('WebSocket: Started Polling...');
+		self.status('(WebSocket): Started Polling...');
 
 		var id = setInterval( function() {
 

@@ -15,6 +15,12 @@ var rest = new Rest();
 
 var onLoad = function() {
 
+	$('#token').val( store.getToken() );
+	$('#clearToken').on('click', function() {
+		store.clearToken();
+		$('#token').val( store.getToken() );
+	});
+
 	//Web Socket Support
 	var supported = ('WebSocket' in window) ? 'is supported by your Browser!' : 'is NOT supported by your Browser!';
 	$('#supported').text(supported);
@@ -40,7 +46,9 @@ var onLoad = function() {
 	});
 
 	$('#wsGreet').on('click', function() {
-		sock.greet();
+		console.log( $('#name').val() );
+
+		sock.greet( $('#name').val() );
 	});
 
 	$('#wsPing').on('click', function() {

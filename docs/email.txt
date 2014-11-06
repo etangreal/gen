@@ -2,31 +2,31 @@
 ___________________________________________________________________________________________________
 
 Ernst,
-I was looking at the current repo. 
+	
+	I was looking at the current repo. 
 
-I expect the final project to be more simple in term of architecture. 
+	I expect the final project to be more simple in term of architecture. 
 
-No gulp, no virtualbox no vagrant. converting scss to css is a designer responsibility.
+	No gulp, no virtualbox no vagrant. converting scss to css is a designer responsibility.
 
 you should have:
 
-/public : html scss, css and client side javascript
+	/public : html scss, css and client side javascript
 
-/src : server.js executable.
+	/src : server.js executable.
 
 on index.html loading, the web socket connection must be immediate and automatic. on reload or on browser restart the index.html must be able to rebuild the state as it was before closing. So if you have the message on the screen:
 
-host: ws://localhost:8080/
-Connection opened...
-Message received...
-{"msg":"HELLO","type":"INIT","token":"da57f150-6590-11e4-8a4f-8d2f1b47a2cb","error":null}
+	host: ws://localhost:8080/
+	Connection opened...
+	Message received...
+	{"msg":"HELLO","type":"INIT","token":"da57f150-6590-11e4-8a4f-8d2f1b47a2cb","error":null}
 
 on restart, I expect the same message to be recreated, a connection id must be persistent … maybe the message could say “Connection reopened” instead of “Connection opened”.
 
 I am sending you an example . It has no persistence re-connections. 
 
 Marco
-
 ___________________________________________________________________________________________________
 
 Hello Ernst,
@@ -67,7 +67,7 @@ PS: up to you to decide if local storage or cookies should be used to store clie
 
 A plus will be:
 
-	1 - SCSS instead of SCSS. 
+	1 - SCSS instead of CSS.
 	2 - Code documentation with YUIDoc http://yui.github.io/yuidoc/ or similar for both client side and server side.
 	3 - Unit testing for client side and server side.
 	4 - NodeJS server implements a RESTful and Web-socket servers into one, so that I can use standard ajax or web sockets.
@@ -76,7 +76,8 @@ Schedule:
 	Working 3 hour per day for 5 days should be enough to achieve the objectives. 
 	If you need more time just let me know. 
 
-Let me know when you plan to start, also with Emilia we are looking for a spot in our weekly schedule so that you can come to visit us.
+Let me know when you plan to start, also with Emilia we are looking for a spot in our weekly schedule 
+so that you can come to visit us.
 
 Cheers,
 Marco

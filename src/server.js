@@ -9,7 +9,7 @@ var	express 	= require('express'),
 	ws 			= require('ws'),
 	app 		= express();
 
-var wsd 		= require('./server/wsd'),
+var sock 		= require('./server/sock'),
 	httpd 		= require('./server/httpd');
 
 // ------------------------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ console.log('starting http & websocket servers');
 var httpServer 		= http.createServer(app);
 var webSocketServer = ws.createServer({server: httpServer});
 
-webSocketServer.on('connection', wsd.onConnect.bind(webSocketServer));
+webSocketServer.on('connection', sock.onConnect.bind(webSocketServer));
 httpServer.listen(8080, httpd.onStart.bind(httpServer));
 
 // ------------------------------------------------------------------------------------------------
