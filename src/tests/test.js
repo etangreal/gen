@@ -1,13 +1,13 @@
 
 // ------------------------------------------------------------------------------------------------
-// PRE-ROUTE
+// TESTS
 // ------------------------------------------------------------------------------------------------
 
-module.exports = function(express, app) {
-
-	app.use(express.static(__dirname + '/public'));
-
-};//module.expots
+test("a basic test example", function () {
+    ok(true, "this test is fine");
+    var value = "hello";
+    equal("hello", value, "We expect value to be hello");
+});
 
 // ------------------------------------------------------------------------------------------------
 // END

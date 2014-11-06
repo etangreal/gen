@@ -3,7 +3,19 @@
 # NODEJS
 # -------------------------------------------------------------------------------------------------
 
-	www.sitepoint.com/understanding-module-exports-exports-node-js
+	MODULES
+		www.sitepoint.com/understanding-module-exports-exports-node-js
+
+	RESTful API
+		webapplog.com/intro-to-express-js-parameters-error-handling-and-other-middleware
+		expressjs.com/api.html#app.param
+		stackoverflow.com/questions/15482959/express-js-how-to-make-app-get-useridi-in-req-param
+		debugmode.net/2014/03/31/understanding-routing-of-expressjs-in-node-js
+		scotch.io/tutorials/javascript/learn-to-use-the-new-router-in-expressjs-4
+		www.npmjs.org/package/body-parser#installation
+		
+		how-to-consume-json-post-data-in-an-express-application
+			stackoverflow.com/a/24635296/3159102
 
 # -------------------------------------------------------------------------------------------------
 # EXPRESSJS
@@ -42,7 +54,24 @@ SERVER-SIDE:
 # -------------------------------------------------------------------------------------------------
 
 	qunitjs.com/cookbook
+
 	code.tutsplus.com/tutorials/how-to-test-your-javascript-code-with-qunit--net-9077
+
+	npmjs.org/package/qunit
+	stackoverflow.com/questions/11236543/how-do-use-node-qunit
+	shiftinginterests.wordpress.com/2011/08/29/sharing-qunit-tests-between-browsers-and-node-js
+
+	OTHER
+		www.andymatthews.net/read/2012/05/29/Unit-Testing-jQuery-Plugins-with-Grunt-and-QUnit
+		mwebhack.blogspot.ch/2011/06/nodejs-testing-frameworks.html
+
+# -------------------------------------------------------------------------------------------------
+# JSON REST
+# -------------------------------------------------------------------------------------------------
+
+TUTORIAL: Node.js and MongoDB JSON REST API server with Mongoskin and Express.js
+	 URL: webapplog.com/tutorial-node-js-and-mongodb-json-rest-api-server-with-mongoskin-and-express-js
+  GITHUB: github.com/azat-co/rest-api-express
 
 # -------------------------------------------------------------------------------------------------
 # JAVASCRIPT
@@ -54,6 +83,18 @@ SERVER-SIDE:
 
 	UUID
 		blog.tompawlak.org/generate-unique-identifier-nodejs-javascript
+
+	TABS TUTORIAL
+		www.jacklmoore.com/notes/jquery-tabs
+
+	ACCESSING REST API FROM JAVASCRIPT
+		api.jquery.com/jquery.ajax
+		api.jquery.com/jquery.post
+		www.codecademy.com/en/tracks/mandrill
+		mandrillapp.com/api/docs
+		developer.wordpress.com/docs/rest-api-javascript
+		hayageek.com/jquery-ajax-post
+		www.w3schools.com/jquery/ajax_post.asp
 
 # -------------------------------------------------------------------------------------------------
 # END

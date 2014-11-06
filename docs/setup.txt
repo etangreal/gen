@@ -5,6 +5,7 @@
 
 npm install -g nodemon
 npm install -g gulp
+npm install -g qunit
 
 # genioo/src/
 
@@ -24,6 +25,7 @@ npm install --save-dev qunitjs
 # -------------------------------------------------------------------------------------------------
 
 touch README.md
+
 git init
 git add README.md
 git commit -m "first commit"

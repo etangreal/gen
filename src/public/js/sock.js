@@ -42,11 +42,27 @@ Sock.prototype.connect = function(host) {
 Sock.prototype.status = function(msg) {
 	var self = this;
 	console.log(msg);
-	
+
 	var html = $('#status').html();
 	html = (html == '&nbsp;') ? "" : html + "<br />";
 
-	$('#status').html( html + msg);
+	$('#status').html(html + msg);
+}
+
+// function log(obj) {
+//     $('#status').text(JSON.stringify(obj));
+// }
+
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.send = function(msg) {
+	var self = this;
+	self.status('Message sent...');
+
+	var pkg = util.pack(msg);
+	self._ws.send(pkg);
+
+	self.status(pkg);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -59,17 +75,13 @@ Sock.prototype.ping = function() {
 		return;
 	}
 
-	var pkg = util.pack({
+	self.send({
 		  msg: 'PING',
 		 type: 'INIT',
 		token: storage.getToken(),
 		error: null
 	});
-
-	self._ws.send(pkg);
-	self.status('PING: ' + pkg);
 }
-
 
 // ------------------------------------------------------------------------------------------------
 // EVENTS
@@ -91,8 +103,10 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 	var msg = util.unpack(pkg);
 	self.status(pkg);
 
-	if (msg.error)
+	if (msg.error) {
 		self.status('ERROR: ' + msg.error);
+		return;
+	}
 };
 
 // ------------------------------------------------------------------------------------------------

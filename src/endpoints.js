@@ -1,5 +1,9 @@
 
 // ------------------------------------------------------------------------------------------------
+// IMPORTS
+// ------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------
 // ENDPOINTS
 // ------------------------------------------------------------------------------------------------
 
@@ -9,41 +13,59 @@ module.exports = function(app) {
 	// paramenters
 	// --------------------------------------------------------------------------------------------
 
-	app.param('collectionName', function(req, res, next, collectionName) {
-		return next();
+	app.param('name', function(req, res, next, name) {
+		req.name = name;
+		next();
+	});
+
+	// --------------------------------------------------------------------------------------------
+
+	app.param('token', function(req, res, next, token) {
+		req.token = token;
+		next();
 	});
 
 	// --------------------------------------------------------------------------------------------
 	// endpoints
 	// --------------------------------------------------------------------------------------------
 
-	app.get('/collections/:collectionName', function(req, res) {
-		res.send('get/collection');
+	app.post('/user/register/:name', function(req, res) {
+		console.log('POST /user/register/:name ' + req.name);
+		res.send({post:'post'});
 	});
 
 	// --------------------------------------------------------------------------------------------
 
-	app.post('/collections/:collectionName', function(req, res) {
-		res.send('post');
+	app.post('/user/greet/:token', function(req, res) {
+		console.log('POST /user/greet/:token ' + req.token);
+		res.send({post:'post'});
 	});
 
 	// --------------------------------------------------------------------------------------------
 
-	app.get('/collections/:collectionName/:id', function(req, res) {
-		res.send('collection/id');
+	app.post('/user/ping', function(req, res) {
+		console.log('POST /user/ping');
+		res.send({pong:'pong'});
 	});
 
 	// --------------------------------------------------------------------------------------------
 
-	app.put('/collections/:collectionName/:id', function(req, res) {
-		res.send('put/collection/id');
-	});
+	// app.get('/handshake/:msg', function(req, res) {
+	// 	console.log('/message/:msg');
+	// 	res.send('get');
+	// });
 
 	// --------------------------------------------------------------------------------------------
 
-	app.delete('/collections/:collectionName/:id', function(req, res) {
-		res.send('delete/collection/id');
-	});
+	// app.put('/message/:msg', function(req, res) {
+	// 	res.send('put');
+	// });
+
+	// --------------------------------------------------------------------------------------------
+
+	// app.delete('/message/:msg', function(req, res) {
+	// 	res.send('delete');
+	// });
 
 };//module.export
 

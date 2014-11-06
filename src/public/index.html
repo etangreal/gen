@@ -9,7 +9,7 @@
 	<body>
 		<div>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<strong>NAME:</strong> <input type="text" id="name">
+			<strong>NAME:</strong> <input type="text" id="name" value="test">
 		<div>
 
 		<ul class='tabs'>
@@ -20,13 +20,12 @@
 		<div>
 			<div id='wsTab'>
 				<div>
-					<span> Web Socket Support: </span> <span id="supported"></span>
+					<span>Web Socket: </span> <span id="supported"></span>
 				</div>
 
 				&nbsp;&nbsp;&nbsp;&nbsp;Host: <input type="text" id="wsHost">
 				<button type="button" id="wsConnect">connect</button>
-				<button type="button" id="wsPing">send ping</button>
-				<button type="button" id="clearStatus">clear status</button>
+				<button type="button" id="wsPing">ping</button>
 			</div>
 			<div id='httpTab'>
 				<div>
@@ -34,20 +33,27 @@
 				</div>
 
 				&nbsp;&nbsp;&nbsp;&nbsp;Host: <input type="text" id="httpHost">
-				<button type="button" id="httpConnect">connect</button>
-				<button type="button" id="httpPing">send ping</button>
-				<button type="button" id="clearStatus">clear status</button>
+				<button type="button" id="httpRegister">register</button>
+				<button type="button" id="httpGreet">greet</button>
+				<button type="button" id="httpPing">ping</button>
 			</div>
 		</div>
 		<div>
+			<button type="button" id="clearStatus">clear status</button>
 			<div id="status" class="status">&nbsp;</div>
 		</div>
 	</body>
-
+	
+	<!-- 3rd Party Libraries  -->
 	<script src="js/jquery-2.1.1.min.js"></script>
+
+	<!-- Our Libraries -->
     <script src="js/util.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/sock.js"></script>
+    <script src="js/rest.js"></script>
+    <script src="js/UI.js"></script>
 
+    <!-- CodeBehind -->
     <script src="index.html.js"></script>
 </html>

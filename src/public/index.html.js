@@ -4,8 +4,12 @@
 // DECLARATIONS
 // ------------------------------------------------------------------------------------------------
 
+
+var util = window.exports.Util;
+var store = window.exports.Storage;
+
 var sock = new Sock();
-var rest = {};
+var rest = new Rest();
 
 // ------------------------------------------------------------------------------------------------
 // EVENTS
@@ -13,17 +17,22 @@ var rest = {};
 
 var onLoad = function() {
 
-	if ('WebSocket' in window)
-		$('#supported').text('Is supported by your Browser!');
-	else
-		$('#supported').text('Is NOT supported by your Browser!');
+	//Web Socket Support
+	var supported = ('WebSocket' in window) ? 'Is supported by your Browser!' : 'Is NOT supported by your Browser!';
+	$('#supported').text(supported);
 
+	//Web Sockets
 	$('#wsHost').val('ws://' + location.host + '/');
 	$('#wsConnect').on('click', onWsConnectClick);
 	$('#wsPing').on('click', onWsPingClick);
 
+	//REST Web Services
 	$('#httpHost').val('http://' + location.host + '/');
+	$('#httpRegister').on('click', onHttpRegisterClick);
+	$('#httpGreet').on('click', onHttpGreetClick);
+	$('#httpPing').on('click', onHttpPingClick);
 
+	//Status
 	$('#clearStatus').on('click', onClearStatusClick);
 
 }//onLoad
@@ -46,14 +55,20 @@ var onWsPingClick = function() {
 // Http
 // ------------------------------------------------------------------------------------------------
 
-var onHttpConnectClick = function() {
-	//sock.connect( $('#wsHost').val() );
+var onHttpRegisterClick = function() {
+	rest.user.register( $('#name').val() );
+}
+
+// ------------------------------------------------------------------------------------------------
+
+var onHttpGreetClick = function() {
+	rest.user.greet( store.getToken() );
 }
 
 // ------------------------------------------------------------------------------------------------
 
 var onHttpPingClick = function() {
-	//sock.ping();
+	rest.user.ping();
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -66,48 +81,6 @@ var onClearStatusClick = function() {
 
 // ------------------------------------------------------------------------------------------------
 // INIT
-// ------------------------------------------------------------------------------------------------
-
-function initTabs() {
-
- 	$('ul.tabs').each(function(){
-	    // For each set of tabs, we want to keep track of
-	    // which tab is active and it's associated content
-	    var $active, $content, $links = $(this).find('a');
-
-	    // If the location.hash matches one of the links, use that as the active tab.
-	    // If no match is found, use the first link as the initial active tab.
-	    $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
-	    $active.addClass('active');
-
-	    $content = $($active[0].hash);
-
-	    // Hide the remaining content
-	    $links.not($active).each(function () {
-	      $(this.hash).hide();
-	    });
-
-	    // Bind the click event handler
-	    $(this).on('click', 'a', function(e){
-	      // Make the old tab inactive.
-	      $active.removeClass('active');
-	      $content.hide();
-
-	      // Update the variables with the new link and content
-	      $active = $(this);
-	      $content = $(this.hash);
-
-	      // Make the tab active.
-	      $active.addClass('active');
-	      $content.show();
-
-	      // Prevent the anchor's default click action
-	      e.preventDefault();
-	    });
-	});
-
-};//initTabs
-
 // ------------------------------------------------------------------------------------------------
 
 initTabs();

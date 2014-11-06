@@ -5,16 +5,16 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha ../tests/test.js"
+    "test": "qunit -c ./server.js -t ./tests/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/etangreal/genioo.git"
+    "url": "https://github.com/etangreal/gen.git"
   },
   "author": "Ernst Salzmann",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/etangreal/genioo/issues"
+    "url": "https://github.com/etangreal/gen/issues"
   },
   "dependencies": {
     "body-parser": "^1.9.2",

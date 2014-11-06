@@ -12,7 +12,8 @@ Testing WebSocket &amp; RESTful Service
 
 # RUN
 
-	nodemon server
+	npm start
+	npm test
 
 # VIEW
 
@@ -24,9 +25,9 @@ Testing WebSocket &amp; RESTful Service
 
 # EDITING CODE
 
-	cd src 
+	cd src
 
 	gulp &
-	nodemon server
+	nodemon server &
 
 # END

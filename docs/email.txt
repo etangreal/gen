@@ -12,9 +12,11 @@ Criteria to follow are the following:
 		The server does not push HTML fragments. 
 		The server data-transmission technology should allow an easy interface with mobile clients 
 		that could be native, web or hybrid. (for this test we only test a web client)
+
 	2 - Qunit must be used to unit test the client side connecting to the server with a web socket (asynchronously).
 	3 - Server side can use express in conjunction with with ws (https://www.npmjs.org/package/ws) and NOT socket.IO.
-	4 - client side javascript does not use any abstraction web socket libraries but pure native web socket object. 
+
+	4 - client side javascript does not use any abstraction web socket libraries but pure native web socket object.
 	5 - no template libraries (ex: moustache, brackets or alike). Web-client must be pure jQuery.
 	6 - no Bootstrap pollution. Just pure jQuery/javascript and handmade CSS.
 
