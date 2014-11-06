@@ -33,5 +33,5 @@ div {
   text-decoration: none; }
 
 .tabs a.active {
-  background: #666;
+  background: lightgrey;
   color: black; }

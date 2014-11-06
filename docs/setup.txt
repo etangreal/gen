@@ -1,27 +1,6 @@
 
 # -------------------------------------------------------------------------------------------------
-# NPM
-# -------------------------------------------------------------------------------------------------
-
-npm install -g nodemon
-npm install -g gulp
-npm install -g qunit
-
-# genioo/src/
-
-npm install --save express
-npm install --save body-parser
-npm install --save ws
-npm install --save node-uuid
-
-npm install --save-dev gulp
-npm install --save-dev gulp-filter
-npm install --save-dev gulp-sass
-
-npm install --save-dev qunitjs
-
-# -------------------------------------------------------------------------------------------------
-# GIT
+# GIT SETUP
 # -------------------------------------------------------------------------------------------------
 
 touch README.md
@@ -31,6 +10,23 @@ git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/etangreal/gen.git
 git push -u origin master
+
+# -------------------------------------------------------------------------------------------------
+# NPM SETUP
+# -------------------------------------------------------------------------------------------------
+
+npm install -g nodemon
+npm install -g qunit
+
+# genioo/src/
+
+npm install --save express
+npm install --save body-parser
+npm install --save ws
+npm install --save node-uuid
+
+npm install --save-dev qunit
+npm install --save-dev qunitjs
 
 # -------------------------------------------------------------------------------------------------
 # END

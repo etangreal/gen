@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------------
 
 var util = window.exports.Util;
-var storage = window.exports.Storage;
+var store = window.exports.Storage;
 
 // ------------------------------------------------------------------------------------------------
 // CONSTRUCTOR
@@ -15,11 +15,11 @@ function Sock() {
 	self._isConnected = false;
 	self._ws = null;
 }
-
+	
 Sock.prototype.constructor = Sock;
 
 // ------------------------------------------------------------------------------------------------
-// FUNCTIONS
+// METHODS
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.connect = function(host) {
@@ -39,6 +39,10 @@ Sock.prototype.connect = function(host) {
 
 // ------------------------------------------------------------------------------------------------
 
+// function log(obj) {
+//     $('#status').text(JSON.stringify(obj));
+// }
+
 Sock.prototype.status = function(msg) {
 	var self = this;
 	console.log(msg);
@@ -49,10 +53,8 @@ Sock.prototype.status = function(msg) {
 	$('#status').html(html + msg);
 }
 
-// function log(obj) {
-//     $('#status').text(JSON.stringify(obj));
-// }
-
+// ------------------------------------------------------------------------------------------------
+// API
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.send = function(msg) {
@@ -67,6 +69,42 @@ Sock.prototype.send = function(msg) {
 
 // ------------------------------------------------------------------------------------------------
 
+Sock.prototype.register = function(name) {
+	var self = this;	
+
+	if (!self._isConnected) {
+		self.status('No connection!');
+		return;
+	}
+
+	self.send({
+		  msg: name,
+		 type: '/user/register',
+		token: store.getToken(),
+		error: null
+	});
+}
+
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.greet = function() {
+	var self = this;	
+
+	if (!self._isConnected) {
+		self.status('No connection!');
+		return;
+	}
+
+	self.send({
+		  msg: 'hello',
+		 type: '/user/greet',
+		token: store.getToken(),
+		error: null
+	});
+}
+
+// ------------------------------------------------------------------------------------------------
+
 Sock.prototype.ping = function() {
 	var self = this;	
 
@@ -76,9 +114,9 @@ Sock.prototype.ping = function() {
 	}
 
 	self.send({
-		  msg: 'PING',
-		 type: 'INIT',
-		token: storage.getToken(),
+		  msg: '',
+		 type: '/user/ping',
+		token: store.getToken(),
 		error: null
 	});
 }
@@ -90,6 +128,7 @@ Sock.prototype.ping = function() {
 Sock.prototype.onOpen = function() { // WebSocket: connected.
 	var self = this;
 	self.status('Connection opened...');
+
 	self._isConnected = true;
 };
 
@@ -113,7 +152,8 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 
 Sock.prototype.onClose = function() { // WebSocket: closed.
 	var self = this;
-	self.status('Connection closed...'); 
+	self.status('Connection closed...');
+
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -122,6 +162,7 @@ Sock.prototype.onError = function(err) { // WebSocket: error occured.
 	var self = this;
 	self.status('Connection error...');
 	self.status('ERROR: ' + err.message);
+
 }
 
 // ------------------------------------------------------------------------------------------------

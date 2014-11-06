@@ -1,11 +1,11 @@
 {
-  "name": "genioo-http-websocket-server",
-  "version": "0.0.1",
-  "description": "genioo REST & WebSocket Service",
+  "name": "test-websocket-http-web-server",
+  "version": "0.0.2",
+  "description": "Testing WebSocket & RESTfull Web Service",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "qunit -c ./server.js -t ./tests/test.js"
+    "start": "node server.js",
+    "test": "qunit -c ./server.js -t ../tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -17,15 +17,11 @@
     "url": "https://github.com/etangreal/gen/issues"
   },
   "dependencies": {
-    "body-parser": "^1.9.2",
     "express": "^4.10.1",
-    "gulp": "^3.8.10",
-    "node-uuid": "^1.4.1",
-    "ws": "^0.4.32"
+    "body-parser": "^1.9.2",
+    "ws": "^0.4.32",
+    "node-uuid": "^1.4.1"
   },
   "devDependencies": {
-    "gulp-filter": "^1.0.2",
-    "gulp-sass": "^1.2.2",
-    "qunitjs": "^1.15.0"
   }
 }

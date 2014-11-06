@@ -4,7 +4,6 @@
 // DECLARATIONS
 // ------------------------------------------------------------------------------------------------
 
-
 var util = window.exports.Util;
 var store = window.exports.Storage;
 
@@ -23,61 +22,36 @@ var onLoad = function() {
 
 	//Web Sockets
 	$('#wsHost').val('ws://' + location.host + '/');
-	$('#wsConnect').on('click', onWsConnectClick);
-	$('#wsPing').on('click', onWsPingClick);
+
+	$('#wsConnect').on('click', function() { 
+		sock.connect( $('#wsHost').val() ); 
+	});
+
+	$('#wsPing').on('click', function() {
+		sock.ping();
+	});
 
 	//REST Web Services
 	$('#httpHost').val('http://' + location.host + '/');
-	$('#httpRegister').on('click', onHttpRegisterClick);
-	$('#httpGreet').on('click', onHttpGreetClick);
-	$('#httpPing').on('click', onHttpPingClick);
+
+	$('#httpRegister').on('click', function() {
+		rest.user.register( $('#name').val() );
+	});
+
+	$('#httpGreet').on('click', function() {
+		rest.user.greet( store.getToken() );
+	});
+
+	$('#httpPing').on('click', function() {
+		rest.user.ping();
+	});
 
 	//Status
-	$('#clearStatus').on('click', onClearStatusClick);
+	$('#clearStatus').on('click', function() {
+		$('#status').html('&nbsp;');
+	});
 
 }//onLoad
-
-// ------------------------------------------------------------------------------------------------
-// WebSockets
-// ------------------------------------------------------------------------------------------------
-
-var onWsConnectClick = function() {
-	sock.connect( $('#wsHost').val() );
-}
-
-// ------------------------------------------------------------------------------------------------
-
-var onWsPingClick = function() {
-	sock.ping();
-}
-
-// ------------------------------------------------------------------------------------------------
-// Http
-// ------------------------------------------------------------------------------------------------
-
-var onHttpRegisterClick = function() {
-	rest.user.register( $('#name').val() );
-}
-
-// ------------------------------------------------------------------------------------------------
-
-var onHttpGreetClick = function() {
-	rest.user.greet( store.getToken() );
-}
-
-// ------------------------------------------------------------------------------------------------
-
-var onHttpPingClick = function() {
-	rest.user.ping();
-}
-
-// ------------------------------------------------------------------------------------------------
-// Status
-// ------------------------------------------------------------------------------------------------
-
-var onClearStatusClick = function() {
-	$('#status').html('&nbsp;');
-}
 
 // ------------------------------------------------------------------------------------------------
 // INIT

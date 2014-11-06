@@ -1,3 +1,34 @@
+
+___________________________________________________________________________________________________
+
+Ernst,
+I was looking at the current repo. 
+
+I expect the final project to be more simple in term of architecture. 
+
+No gulp, no virtualbox no vagrant. converting scss to css is a designer responsibility.
+
+you should have:
+
+/public : html scss, css and client side javascript
+
+/src : server.js executable.
+
+on index.html loading, the web socket connection must be immediate and automatic. on reload or on browser restart the index.html must be able to rebuild the state as it was before closing. So if you have the message on the screen:
+
+host: ws://localhost:8080/
+Connection opened...
+Message received...
+{"msg":"HELLO","type":"INIT","token":"da57f150-6590-11e4-8a4f-8d2f1b47a2cb","error":null}
+
+on restart, I expect the same message to be recreated, a connection id must be persistent … maybe the message could say “Connection reopened” instead of “Connection opened”.
+
+I am sending you an example . It has no persistence re-connections. 
+
+Marco
+
+___________________________________________________________________________________________________
+
 Hello Ernst,
 
 Here is the technical test for you !
@@ -14,6 +45,7 @@ Criteria to follow are the following:
 		that could be native, web or hybrid. (for this test we only test a web client)
 
 	2 - Qunit must be used to unit test the client side connecting to the server with a web socket (asynchronously).
+
 	3 - Server side can use express in conjunction with with ws (https://www.npmjs.org/package/ws) and NOT socket.IO.
 
 	4 - client side javascript does not use any abstraction web socket libraries but pure native web socket object.
@@ -58,3 +90,4 @@ Genioo AG
 	   Tel: +41 41 410 72 72
 	Mobile: +41 79 504 89 38
 	   Web: www.genioo.com
+___________________________________________________________________________________________________

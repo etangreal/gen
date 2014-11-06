@@ -1,6 +1,6 @@
 
 # -------------------------------------------------------------------------------------------------
-# NODEJS
+# NODE.JS
 # -------------------------------------------------------------------------------------------------
 
 	MODULES
@@ -18,7 +18,7 @@
 			stackoverflow.com/a/24635296/3159102
 
 # -------------------------------------------------------------------------------------------------
-# EXPRESSJS
+# EXPRESS.JS
 # -------------------------------------------------------------------------------------------------
 
 	expressjs.com/4x/api.html
@@ -69,9 +69,9 @@ SERVER-SIDE:
 # JSON REST
 # -------------------------------------------------------------------------------------------------
 
-TUTORIAL: Node.js and MongoDB JSON REST API server with Mongoskin and Express.js
-	 URL: webapplog.com/tutorial-node-js-and-mongodb-json-rest-api-server-with-mongoskin-and-express-js
-  GITHUB: github.com/azat-co/rest-api-express
+	ARTICLE: Node.js and MongoDB JSON REST API server with Mongoskin and Express.js
+		webapplog.com/tutorial-node-js-and-mongodb-json-rest-api-server-with-mongoskin-and-express-js
+ 		github.com/azat-co/rest-api-express
 
 # -------------------------------------------------------------------------------------------------
 # JAVASCRIPT

@@ -1,4 +1,10 @@
+
 **/.DS_Store
 **/nohup.dat
+
 src/node_modules
+
+build
 build/.vagrant
+
+tmp

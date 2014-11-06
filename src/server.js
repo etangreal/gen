@@ -3,14 +3,14 @@
 // IMPORTS
 // ------------------------------------------------------------------------------------------------
 
-var	http 		= require('http'),
-	ws 			= require('ws'),
-	express 	= require('express'),
+var	express 	= require('express'),
 	bodyParser  = require('body-parser'),
+	http 		= require('http'),
+	ws 			= require('ws'),
 	app 		= express();
 
-var wsd 		= require('./wsd'),
-	httpd 		= require('./httpd');
+var wsd 		= require('./server/wsd'),
+	httpd 		= require('./server/httpd');
 
 // ------------------------------------------------------------------------------------------------
 // INITITIALIZE
@@ -21,12 +21,13 @@ app.use( bodyParser.json() );
 
 // --------------------------------------------------------------------------------------------
 
-require('./routes')(app);
-require('./endpoints')(app);
+require('./server/routes')(app);
+require('./server/endpoints')(app);
 
 // --------------------------------------------------------------------------------------------
 
 app.use(function(req, res, next){
+  // res.status(404).body('Sorry cant find that!');
   res.send(404, 'Sorry cant find that!');
 });
 
