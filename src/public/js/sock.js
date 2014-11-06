@@ -15,7 +15,7 @@ function Sock() {
 	self._isConnected = false;
 	self._ws = null;
 }
-	
+
 Sock.prototype.constructor = Sock;
 
 // ------------------------------------------------------------------------------------------------
@@ -24,24 +24,38 @@ Sock.prototype.constructor = Sock;
 
 Sock.prototype.connect = function(host) {
 	var self = this;
-	self.status('host: ' + host);
+	self.status('WebSocket: Connecting...');
 
 	//open a web socket
-	var ws = new WebSocket(host);
-
-	ws.onopen = self.onOpen.bind(self);
+	var ws 		 = new WebSocket(host);
+	ws.onopen 	 = self.onOpen.bind(self);
 	ws.onmessage = self.onMessage.bind(self);
-	ws.onclose = self.onClose.bind(self);
-	ws.onerror = self.onError.bind(self);
-
-	self._ws = ws;
+	ws.onclose 	 = self.onClose.bind(self);
+	ws.onerror 	 = self.onError.bind(self);
+	self._ws 	 = ws;
 }
 
 // ------------------------------------------------------------------------------------------------
 
-// function log(obj) {
-//     $('#status').text(JSON.stringify(obj));
-// }
+Sock.prototype.close = function() {
+	var self = this;
+	self.status('WebSocket: Closing...');
+	self._ws.close();
+}
+
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.send = function(msg) {
+	var self = this;
+	self.status('WebSocket: Message sent...');
+
+	var pkg = util.pack(msg);
+	self._ws.send(pkg);
+
+	self.status('Websocket: ' + pkg);
+}
+
+// ------------------------------------------------------------------------------------------------
 
 Sock.prototype.status = function(msg) {
 	var self = this;
@@ -57,29 +71,19 @@ Sock.prototype.status = function(msg) {
 // API
 // ------------------------------------------------------------------------------------------------
 
-Sock.prototype.send = function(msg) {
-	var self = this;
-	self.status('Message sent...');
-
-	var pkg = util.pack(msg);
-	self._ws.send(pkg);
-
-	self.status(pkg);
-}
-
-// ------------------------------------------------------------------------------------------------
-
 Sock.prototype.register = function(name) {
 	var self = this;	
 
 	if (!self._isConnected) {
-		self.status('No connection!');
+		self.status('WebSocket: No connection!');
 		return;
 	}
 
+	self.status('WebSocket: Sending register...');
+
 	self.send({
 		  msg: name,
-		 type: '/user/register',
+	 endpoint: '/user/register',
 		token: store.getToken(),
 		error: null
 	});
@@ -91,13 +95,15 @@ Sock.prototype.greet = function() {
 	var self = this;	
 
 	if (!self._isConnected) {
-		self.status('No connection!');
+		self.status('WebSocket: No connection!');
 		return;
 	}
 
+	self.status('WebSocket: Sending greet...');
+
 	self.send({
 		  msg: 'hello',
-		 type: '/user/greet',
+	 endpoint: '/user/greet',
 		token: store.getToken(),
 		error: null
 	});
@@ -109,13 +115,15 @@ Sock.prototype.ping = function() {
 	var self = this;	
 
 	if (!self._isConnected) {
-		self.status('No connection!');
+		self.status('WebSocket: No connection!');
 		return;
 	}
 
+	self.status('WebSocket: Sending ping...');
+
 	self.send({
 		  msg: '',
-		 type: '/user/ping',
+	 endpoint: '/user/ping',
 		token: store.getToken(),
 		error: null
 	});
@@ -127,7 +135,7 @@ Sock.prototype.ping = function() {
 
 Sock.prototype.onOpen = function() { // WebSocket: connected.
 	var self = this;
-	self.status('Connection opened...');
+	self.status('WebSocket: Connection opened...');
 
 	self._isConnected = true;
 };
@@ -136,14 +144,14 @@ Sock.prototype.onOpen = function() { // WebSocket: connected.
 
 Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 	var self = this;
-	self.status('Message received...');
+	self.status('WebSocket: Message received...');
 
 	var pkg = MsgEvt.data;
 	var msg = util.unpack(pkg);
-	self.status(pkg);
+	self.status('WebSocket: ' + pkg);
 
 	if (msg.error) {
-		self.status('ERROR: ' + msg.error);
+		self.status('WebSocket: ERROR: ' + msg.error);
 		return;
 	}
 };
@@ -152,7 +160,7 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 
 Sock.prototype.onClose = function() { // WebSocket: closed.
 	var self = this;
-	self.status('Connection closed...');
+	self.status('WebSocket: Connection closed...');
 
 };
 
@@ -160,9 +168,8 @@ Sock.prototype.onClose = function() { // WebSocket: closed.
 
 Sock.prototype.onError = function(err) { // WebSocket: error occured.
 	var self = this;
-	self.status('Connection error...');
-	self.status('ERROR: ' + err.message);
-
+	self.status('WebSocket: Connection error...');
+	console.log('WebSocket ERROR: ' + err.message);
 }
 
 // ------------------------------------------------------------------------------------------------

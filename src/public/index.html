@@ -18,11 +18,13 @@
 		<div>
 			<div id='wsTab'>
 				<div>
-					<span>Web Socket: </span> <span id="supported"></span>
+					<strong>Web Sockets</strong> <span id="supported"></span>
 				</div>
 
 				&nbsp;&nbsp;&nbsp;&nbsp;Host: <input type="text" id="wsHost">
 				<button type="button" id="wsConnect">connect</button>
+				<button type="button" id="wsDisconnect">disconnect</button>
+				<button type="button" id="wsGreet">greet</button>
 				<button type="button" id="wsPing">ping</button>
 			</div>
 			<div id='httpTab'>
@@ -36,7 +38,7 @@
 				<button type="button" id="httpPing">ping</button>
 			</div>
 		</div>
-		<div>
+		<div class="status_container">
 			<button type="button" id="clearStatus">clear status</button>
 			<div id="status" class="status">&nbsp;</div>
 		</div>

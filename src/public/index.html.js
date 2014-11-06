@@ -4,6 +4,7 @@
 // DECLARATIONS
 // ------------------------------------------------------------------------------------------------
 
+
 var util = window.exports.Util;
 var store = window.exports.Storage;
 
@@ -17,14 +18,24 @@ var rest = new Rest();
 var onLoad = function() {
 
 	//Web Socket Support
-	var supported = ('WebSocket' in window) ? 'Is supported by your Browser!' : 'Is NOT supported by your Browser!';
+	var supported = ('WebSocket' in window) ? 'is supported by your Browser!' : 'is NOT supported by your Browser!';
 	$('#supported').text(supported);
+	
 
 	//Web Sockets
-	$('#wsHost').val('ws://' + location.host + '/');
+	var host = 'ws://' + location.host + '/';
+
+	if (supported)
+		sock.connect(host);
+
+	$('#wsHost').val(host);
 
 	$('#wsConnect').on('click', function() { 
 		sock.connect( $('#wsHost').val() ); 
+	});
+
+	$('#wsDisconnect').on('click', function() { 
+		sock.close(); 
 	});
 
 	$('#wsPing').on('click', function() {

@@ -13,27 +13,113 @@ var uuid = require('node-uuid');
 var self = module.exports = {
 
 	// --------------------------------------------------------------------------------------------
-	// SERVICE
+	// METHODS
 	// --------------------------------------------------------------------------------------------
 
-	poll: function(ws) {
-		console.log('Started Polling...');
+	send: function(msg) {
+		var pkg = util.pack(msg);
+		ws.send(pkg);
+	},
 
-		var id = setInterval( function() {
+	// --------------------------------------------------------------------------------------------
 
-			var pkg = util.pack({
-				 msg: Date.now(),
-				type: 'POLL',
+	status: function(prefix, msg) {
+		console.log(prefix);
+
+		if (msg && msg !== '')
+			console.log('	MSG: ', msg);
+	},
+
+	// --------------------------------------------------------------------------------------------
+	// ROUTING
+	// --------------------------------------------------------------------------------------------
+
+	route: function(msg) {
+
+		switch(msg.endpoint) {
+			case '/user/register':
+				self.user.register(msg);
+				break;
+			case '/user/greet':
+				self.user.greet(msg);
+				break;
+			case '/user/ping':
+				self.user.ping(msg);
+				break;
+			default:
+				self.unknown(msg);
+		}
+
+	},//route
+
+	// --------------------------------------------------------------------------------------------
+	// USER
+	// --------------------------------------------------------------------------------------------
+
+	user: {
+
+		register: function(msg) {
+			self.status('WebSocket: Client wants to REGISTER: ', msg);
+
+			var reply = {
+				  msg: 'token',
+			 endpoint: '/user/register',
+				token: uuid.v1(),
+				error: null
+			};
+
+			self.status('WebSocket: Server replies to REGISTER request: ', reply);
+			//self.send(reply);
+		},
+
+		// ----------------------------------------------------------------------------------------
+
+		greet: function(msg) {
+			self.status('WebSocket: Client GREETs: ', msg);
+
+			var reply = {
+				  msg: 'hi',
+			 endpoint: '/user/greet',
 				token: null,
 				error: null
-			});
+			};
 
-			ws.send(pkg);
-			console.log('POLL: ', util.display(pkg));
+			self.status('WebSocket: Server replies to GREETing: ', reply);
+			//self.send(reply);
+		},
 
-		}, 5000);
+		// ----------------------------------------------------------------------------------------
 
-		return id;
+		ping: function(msg) {
+			self.status('WebSocket: Client sends PING: ', msg);
+
+			var reply = {
+				  msg: 'pong',
+			 endpoint: '/user/ping',
+				token: null,
+				error: null
+			};
+
+			self.status('WebSocket: Server replies to PING: ', reply);
+			//self.send(reply);
+		}
+
+	}, //user
+
+	// --------------------------------------------------------------------------------------------
+
+	unknown: function(msg) {
+		self.status('WebSocket: UNKNOWN message from Client: ', msg);
+
+			var reply = {
+				  msg: 'Unknown message',
+			 endpoint: '/unknown',
+				token: null,
+				error: null
+			};
+
+		self.status('WebSocket: Server replies to UNKNOWN message from Client. ', reply);
+		//self.send(reply);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -41,65 +127,34 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onConnect: function(ws) { //ws: WebSocket
-		console.log('Client connected...');
-		var wss = this; //Web SocketServer
+		self.status('WebSocket: Client connected...');
 
 		var id = null; //= self.poll(ws);
-
 		ws.onmessage = self.onMessage.bind({ws:ws});
 		ws.onclose 	 = self.onClose.bind({id:id});
 		ws.onerror 	 = self.onError.bind({id:id});
-
-		var pkg = util.pack({
-			  msg: 'HELLO',
-			 type: 'INIT',
-			token: uuid.v1(),
-			error: null
-		});
-
-		ws.send(pkg);
-		console.log('GREET: ' + pkg);
 	},
 
 	// --------------------------------------------------------------------------------------------
 
 	onMessage: function(MsgEvt) { // Listen for msgs from the client
-		console.log('Message recieved...');
-		var ws = this.ws; //WebSocket
+		self.status('Websocket: Message recieved...');
 
 		var pkg = MsgEvt.data
 		var msg = util.unpack(pkg);
 
-		if (!msg.error) {
-			if (msg.type == 'INIT') {
-				console.log('INIT: ' + pkg);
-
-				var pkg = util.pack({
-					  msg: 'PONG',
-					 type: 'INIT',
-					token: null,
-					error: null
-				});
-
-				ws.send(pkg);
-				console.log('REPLIED: ' + pkg);
-
-			} else {
-				console.log('UNKNOWN: ' + pkg);
-			}
-
-		} else {
-			console.log('ERROR: ' + msg.error);
+		if (msg.error) {
+			self.status('WebSocket: Message Error', msg);
+			return;
 		}
 
-	    //wss.broadcast(msg); // And broadcast them to everyone
+		self.route(msg);   
 	},
 
 	// --------------------------------------------------------------------------------------------
 
 	onError: function(err) {
-		console.log('Connection Error...');
-		console.log('ERROR: ' + err.message);
+		self.status('WebSocket: Connection Error...', err.message);
 
 		//ToDo: stop polling...
 	},
@@ -107,11 +162,38 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onClose: function() {
-		console.log('Connection Closed...');
+		self.status('WebSocket: Connection Closed...', '');
 
-		// console.log('Stopped Polling...');
+		// self.status('Server: Stop Polling...');
 		// clearInterval(this.id);
 	}
+
+	// --------------------------------------------------------------------------------------------
+	// SERVICE
+	// --------------------------------------------------------------------------------------------
+
+	/** /
+	poll: function(ws) {
+		self.status('WebSocket: Started Polling...');
+
+		var id = setInterval( function() {
+
+			var msg = {
+				  msg: Date.now(),
+			 endpoint: '/user/poll',
+				token: null,
+				error: null
+			};
+
+			self.send(msg);
+			self.status('Server: Polling... ', msg);
+
+		}, 5000);
+
+		return id;
+	},//poll /**/
+
+	// --------------------------------------------------------------------------------------------
 
 };//module.exports
 
