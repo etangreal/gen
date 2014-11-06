@@ -16,5 +16,3 @@ Testing Web Socket &amp; RESTful Web Services
 
 	http://localhost:8080
 	http://localhost:8080/test.html
-
-# END
