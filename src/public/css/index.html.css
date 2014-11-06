@@ -6,6 +6,9 @@ div {
   display: block;
   margin: 5px; }
 
+.status_container {
+  max-height: 600px; }
+
 .status {
   background: lightyellow; }
 

@@ -9,14 +9,14 @@ var store = window.exports.Storage;
 // CONSTRUCTOR
 // ------------------------------------------------------------------------------------------------
 
-function Sock() {
-	var self = this;
+	function Sock() {
+		var self = this;
 
-	self._isConnected = false;
-	self._ws = null;
-}
+		self._isConnected = false;
+		self._ws = null;
+	}
 
-Sock.prototype.constructor = Sock;
+	Sock.prototype.constructor = Sock;
 
 // ------------------------------------------------------------------------------------------------
 // METHODS
@@ -47,24 +47,37 @@ Sock.prototype.close = function() {
 
 Sock.prototype.send = function(msg) {
 	var self = this;
-	self.status('WebSocket: Message sent...');
+
+	if (!self._isConnected) {
+		self.status('WebSocket: No connection!');
+		return;
+	}
 
 	var pkg = util.pack(msg);
 	self._ws.send(pkg);
 
-	self.status('Websocket: ' + pkg);
+	self.status('Websocket: Message sent...', pkg);
 }
 
 // ------------------------------------------------------------------------------------------------
 
-Sock.prototype.status = function(msg) {
+Sock.prototype.status = function(prefix, msg) {
 	var self = this;
-	console.log(msg);
+	console.log(prefix);
+
+	if (msg && msg !== '')
+		console.log('      MSG:', msg);
 
 	var html = $('#status').html();
-	html = (html == '&nbsp;') ? "" : html + "<br />";
+	html = (html == '&nbsp;') ? "" : html ;
 
-	$('#status').html(html + msg);
+	if (prefix && prefix !== '')
+		html += "<br />" + prefix;
+
+	if (msg && msg !== '')
+		html += "<br /> ---> " + msg;
+
+	$('#status').html(html);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -72,14 +85,9 @@ Sock.prototype.status = function(msg) {
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.register = function(name) {
-	var self = this;	
-
-	if (!self._isConnected) {
-		self.status('WebSocket: No connection!');
-		return;
-	}
-
-	self.status('WebSocket: Sending register...');
+	var self = this;
+	self.status('WebSocket: Sending REGISTER request...');
+	console.log(name);
 
 	self.send({
 		  msg: name,
@@ -92,14 +100,8 @@ Sock.prototype.register = function(name) {
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.greet = function() {
-	var self = this;	
-
-	if (!self._isConnected) {
-		self.status('WebSocket: No connection!');
-		return;
-	}
-
-	self.status('WebSocket: Sending greet...');
+	var self = this;
+	self.status('WebSocket: Sending GREETing...');
 
 	self.send({
 		  msg: 'hello',
@@ -112,17 +114,11 @@ Sock.prototype.greet = function() {
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.ping = function() {
-	var self = this;	
-
-	if (!self._isConnected) {
-		self.status('WebSocket: No connection!');
-		return;
-	}
-
-	self.status('WebSocket: Sending ping...');
+	var self = this;
+	self.status('WebSocket: Sending PING...');
 
 	self.send({
-		  msg: '',
+		  msg: 'ping',
 	 endpoint: '/user/ping',
 		token: store.getToken(),
 		error: null
@@ -144,16 +140,16 @@ Sock.prototype.onOpen = function() { // WebSocket: connected.
 
 Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 	var self = this;
-	self.status('WebSocket: Message received...');
 
 	var pkg = MsgEvt.data;
 	var msg = util.unpack(pkg);
-	self.status('WebSocket: ' + pkg);
 
 	if (msg.error) {
-		self.status('WebSocket: ERROR: ' + msg.error);
+		self.status('WebSocket: Message received... however there was an ERROR in unpacking the message.', msg);
 		return;
 	}
+
+	self.status('WebSocket: Message received...', pkg);
 };
 
 // ------------------------------------------------------------------------------------------------

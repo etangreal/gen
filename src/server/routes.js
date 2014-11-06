@@ -6,7 +6,7 @@
 module.exports = function(app) {
 
 	app.get('/test', function(req, res) {
-		res.send('testing route ...');
+		res.redirect('http://localhost:8080/test.html');
 	});
 
 };//module.exports

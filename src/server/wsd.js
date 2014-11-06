@@ -18,7 +18,9 @@ var self = module.exports = {
 
 	send: function(msg) {
 		var pkg = util.pack(msg);
-		ws.send(pkg);
+		self._ws.send(pkg);
+
+		self.status('Websocket: Message sent...', pkg);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -27,7 +29,7 @@ var self = module.exports = {
 		console.log(prefix);
 
 		if (msg && msg !== '')
-			console.log('	MSG: ', msg);
+			console.log(msg);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -35,6 +37,11 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	route: function(msg) {
+
+		if (!msg || !msg.endpoint) {
+			self.unknown(msg);
+			return;
+		}
 
 		switch(msg.endpoint) {
 			case '/user/register':
@@ -59,23 +66,25 @@ var self = module.exports = {
 	user: {
 
 		register: function(msg) {
-			self.status('WebSocket: Client wants to REGISTER: ', msg);
+			self.status('WebSocket: REGISTER request recieved...');
+
+			var name = msg.msg;
+			var token = uuid.v1();
 
 			var reply = {
-				  msg: 'token',
+				  msg: name,
 			 endpoint: '/user/register',
-				token: uuid.v1(),
+				token: token,
 				error: null
 			};
 
-			self.status('WebSocket: Server replies to REGISTER request: ', reply);
-			//self.send(reply);
+			self.send(reply);
 		},
 
 		// ----------------------------------------------------------------------------------------
 
 		greet: function(msg) {
-			self.status('WebSocket: Client GREETs: ', msg);
+			self.status('WebSocket: GREET recieved...');
 
 			var reply = {
 				  msg: 'hi',
@@ -84,14 +93,13 @@ var self = module.exports = {
 				error: null
 			};
 
-			self.status('WebSocket: Server replies to GREETing: ', reply);
-			//self.send(reply);
+			self.send(reply);
 		},
 
 		// ----------------------------------------------------------------------------------------
 
 		ping: function(msg) {
-			self.status('WebSocket: Client sends PING: ', msg);
+			self.status('WebSocket: PING recieved...');
 
 			var reply = {
 				  msg: 'pong',
@@ -100,8 +108,7 @@ var self = module.exports = {
 				error: null
 			};
 
-			self.status('WebSocket: Server replies to PING: ', reply);
-			//self.send(reply);
+			self.send(reply);
 		}
 
 	}, //user
@@ -109,7 +116,7 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	unknown: function(msg) {
-		self.status('WebSocket: UNKNOWN message from Client: ', msg);
+		self.status('WebSocket: UNKNOWN message from Client... ');
 
 			var reply = {
 				  msg: 'Unknown message',
@@ -118,8 +125,7 @@ var self = module.exports = {
 				error: null
 			};
 
-		self.status('WebSocket: Server replies to UNKNOWN message from Client. ', reply);
-		//self.send(reply);
+		self.send(reply);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -127,7 +133,8 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onConnect: function(ws) { //ws: WebSocket
-		self.status('WebSocket: Client connected...');
+		self.status('WebSocket: Client Connected...');
+		self._ws = ws;
 
 		var id = null; //= self.poll(ws);
 		ws.onmessage = self.onMessage.bind({ws:ws});
@@ -138,16 +145,10 @@ var self = module.exports = {
 	// --------------------------------------------------------------------------------------------
 
 	onMessage: function(MsgEvt) { // Listen for msgs from the client
-		self.status('Websocket: Message recieved...');
-
 		var pkg = MsgEvt.data
 		var msg = util.unpack(pkg);
 
-		if (msg.error) {
-			self.status('WebSocket: Message Error', msg);
-			return;
-		}
-
+		self.status('Websocket: Message Recieved...', msg);
 		self.route(msg);   
 	},
 
