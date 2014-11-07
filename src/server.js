@@ -9,25 +9,26 @@ var	express 	= require('express'),
 	ws 			= require('ws'),
 	app 		= express();
 
-var sock 		= require('./server/sock'),
-	httpd 		= require('./server/httpd');
+var sock 		= require('./server/sock');
 
 // ------------------------------------------------------------------------------------------------
 // INITITIALIZE
 // ------------------------------------------------------------------------------------------------
 
 app.use( express.static(__dirname + '/public') );
-app.use( bodyParser.json() );
+app.use( bodyParser.json() );		// to support JSON-encoded bodies
+app.use( bodyParser.urlencoded({ 	// to support URL-encoded bodies
+  extended: true
+}));
 
 // --------------------------------------------------------------------------------------------
 
 require('./server/routes')(app);
-require('./server/endpoints')(app);
+require('./server/rest')(app);
 
 // --------------------------------------------------------------------------------------------
 
-app.use(function(req, res, next){
-  // res.status(404).body('Sorry cant find that!');
+app.use(function(req, res, next) {  
   res.send(404, 'Sorry cant find that!');
 });
 
@@ -48,7 +49,15 @@ var httpServer 		= http.createServer(app);
 var webSocketServer = ws.createServer({server: httpServer});
 
 webSocketServer.on('connection', sock.onConnect.bind(webSocketServer));
-httpServer.listen(8080, httpd.onStart.bind(httpServer));
+
+httpServer.listen(8080, function () { //onStartup
+	var httpServer = this;
+
+	var host = httpServer.address().address;
+	var port = httpServer.address().port;
+
+	console.log('Example app listening at http://%s:%s', host, port);
+}.bind(httpServer));
 
 // ------------------------------------------------------------------------------------------------
 // END

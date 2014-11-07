@@ -62,11 +62,10 @@ Sock.prototype.send = function(msg) {
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.status = function(prefix, msg) {
-	var self = this;
+	// var self = this;
 	console.log(prefix);
-
 	if (msg && msg !== '')
-		console.log('      MSG:', msg);
+		console.log(' ---> ', msg);
 
 	var html = $('#status').html();
 	html = (html == '&nbsp;') ? "" : html ;
@@ -81,7 +80,57 @@ Sock.prototype.status = function(prefix, msg) {
 }
 
 // ------------------------------------------------------------------------------------------------
+// ROUTING (INCOMING MESSAGES)
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.route = function(msg, pkg) {
+	var self = this;
+
+	if (!msg || !msg.endpoint) {
+		self.unknownMessageReceived(msg, pkg);
+		return;
+	}
+
+	switch(msg.endpoint) {
+		case '/user/greet':
+			self.greetReceived(msg, pkg);
+			break;
+		case '/user/handshake':
+			self.handshakeReceived(msg, pkg);
+			break;
+		default:
+			self.unknownMessageReceived(msg, pkg);
+	}
+
+},//route
+
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.unknownMessageReceived = function(msg, pkg) {
+	self.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
+};
+
+// ------------------------------------------------------------------------------------------------
 // API
+// ------------------------------------------------------------------------------------------------
+
+Sock.prototype.greet = function() {
+	var self = this;
+	self.status('(WebSocket): SENDING GREET...');
+
+	self.send({
+		  msg: 'hello',
+	 endpoint: '/user/greet',
+		token: store.getToken(),
+		error: null
+	});
+}
+
+Sock.prototype.greetReceived = function(msg, pkg) {
+	var self = this;
+	self.status('(WebSocket): GREET RECIEVED from Server...', pkg);
+}
+
 // ------------------------------------------------------------------------------------------------
 
 Sock.prototype.handshake = function(name) {
@@ -104,34 +153,6 @@ Sock.prototype.handshakeReceived = function(msg, pkg) {
 	store.setToken(msg.token);
 	$('#token').val(msg.token);
 }
-
-// ------------------------------------------------------------------------------------------------
-
-Sock.prototype.unknownMessageReceived = function(msg, pkg) {
-	self.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
-};
-
-// ------------------------------------------------------------------------------------------------
-// ROUTING
-// ------------------------------------------------------------------------------------------------
-
-Sock.prototype.route = function(msg, pkg) {
-	var self = this;
-
-	if (!msg || !msg.endpoint) {
-		self.unknownMessageReceived(msg, pkg);
-		return;
-	}
-
-	switch(msg.endpoint) {
-		case '/user/handshake':
-			self.handshakeReceived(msg, pkg);
-			break;
-		default:
-			self.unknownMessageReceived(msg, pkg);
-	}
-
-},//route
 
 // ------------------------------------------------------------------------------------------------
 // EVENTS

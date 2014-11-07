@@ -5,9 +5,21 @@
 
 module.exports = function(app) {
 
+	// --------------------------------------------------------------------------------------------
+
+	app.get('/', function(req, res) {
+		console.log("app.get '/'", "redirecting to index.html" );
+		res.redirect('http://localhost:8080/index.html');
+	});
+
+	// --------------------------------------------------------------------------------------------
+
 	app.get('/test', function(req, res) {
+		console.log("app.get '/test", "redirecting to test.html");
 		res.redirect('http://localhost:8080/test.html');
 	});
+
+	// --------------------------------------------------------------------------------------------
 
 };//module.exports
 

@@ -41,6 +41,10 @@ var onLoad = function() {
 		sock.close(); 
 	});
 
+	$('#wsGreet').on('click', function() {
+		sock.greet();
+	});
+
 	$('#wsHandshake').on('click', function() {
 		sock.handshake( $('#name').val() );
 	});
@@ -48,16 +52,12 @@ var onLoad = function() {
 	//REST Web Services
 	$('#httpHost').val('http://' + location.host + '/');
 
-	$('#httpRegister').on('click', function() {
-		rest.user.register( $('#name').val() );
-	});
-
 	$('#httpGreet').on('click', function() {
-		rest.user.greet( store.getToken() );
+		rest.user.greet();
 	});
 
-	$('#httpPing').on('click', function() {
-		rest.user.ping();
+	$('#httpHandshake').on('click', function() {
+		rest.user.handshake( $('#name').val() );
 	});
 
 	//Status

@@ -20,14 +20,21 @@ Rest.prototype.constructor = Rest;
 // METHODS
 // ------------------------------------------------------------------------------------------------
 
-Rest.prototype.log = function(msg) {
-	var self = this;
-	console.log(msg);
+Rest.prototype.status = function(prefix, msg) {
+	console.log(prefix);
+	if (msg && msg !== '')
+		console.log(' ---> ', msg);
 
 	var html = $('#status').html();
-	html = (html == '&nbsp;') ? "" : html + "<br />";
+	html = (html == '&nbsp;') ? "" : html ;
 
-	$('#status').html(html + msg);
+	if (prefix && prefix !== '')
+		html += "<br />" + prefix;
+
+	if (msg && msg !== '')
+		html += "<br /> ---> " + msg;
+
+	$('#status').html(html);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -36,94 +43,94 @@ Rest.prototype.log = function(msg) {
 
 Rest.prototype.user = {
 
-	// ------------------------------------------------------------------------------------------------
-
-	register: function(name) {
-
-		var url = "http://localhost:8080/user/register/" + name;
-		var data = {};
-		var dataType = "json";
-
-		var success = function(data,status) {
-			console.log( "rest.user.register: success" );
-		}
-
-		var done = function(data) {
-			console.log( "rest.user.register: second success" );
-		}
-
-		var fail = function(jqXHR, textStatus, error) {
-			console.log( "rest.user.register: error");
-		}
-
-		var always = function() {
-			console.log( "rest.user.register: finished" );
-		}
-
-		var post = $.post(url,data,success,dataType).done(done).fail(fail).always(always);
-
-	},//register
-
-	// ------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------
+	// API
+	// --------------------------------------------------------------------------------------------
 	
-	greet: function(token) {
+	greet: function() {
 
-		var url = "http://localhost:8080/user/greet/" + token;
-		var data = {};
+		var token = store.getToken();
+		var tac = token ? ("/" + token) : "";
+
+		var url = "http://localhost:8080/user/greet" + tac;
+
+		var data = {
+			  msg: 'hello',
+		 endpoint: '/user/greet',
+			token: token,
+			error: null
+		}
+
 		var dataType = "json";
 
 		var success = function(data,status) {
-			console.log( "rest.user.greet: success" );
+			// console.log('rest.user.greet: success', data);
+			Rest.prototype.status('(RESTful): GREET RECIEVED from Server...', util.pack(data));
 		}
 
 		var done = function(data) {
-			console.log( "rest.user.greet: second success" );
+			//console.log('rest.user.greet: second success', data);
 		}
 
 		var fail = function(jqXHR, textStatus, error) {
-			console.log( "rest.user.greet: error");
+			//console.log('rest.user.greet: error');
 		}
 
 		var always = function() {
-			console.log( "rest.user.greet: finished" );
+			//console.log('rest.user.greet: finished');
 		}
 
+		Rest.prototype.status('(RESTful): SENDING GREET...', util.pack(data));
 		var post = $.post(url,data,success,dataType).done(done).fail(fail).always(always);
 
 	},//greet
 
-	// ------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------
 
-	ping: function() {
+	handshake: function(name) {
+		var self = this;
 
-		var url = "http://localhost:8080/user/ping";
-		var data = {};
+		var token = store.getToken();
+		var tac = token ? ("/" + token) : "";
+
+		var url = "http://localhost:8080/user/handshake" + tac;
+
+		var data = {
+			  msg: 'hello',
+			 name: name,
+		 endpoint: '/user/handshake',
+			token: store.getToken(),
+			error: null
+		}
+
 		var dataType = "json";
 
 		var success = function(data,status) {
-			console.log( "rest.user.ping: success" );
+			Rest.prototype.status('(RESTful): HANDSHAKE RECIEVED from Server...', util.pack(data));
+			store.setToken(data.token);
+			$('#token').val(data.token);
 		}
 
 		var done = function(data) {
-			console.log( "rest.user.ping: second success" );
+			//console.log('rest.user.ping: second success', data);
 		}
 
 		var fail = function(jqXHR, textStatus, error) {
-			console.log( "rest.user.ping: error");
+			// console.log( "rest.user.ping: error");
 		}
 
 		var always = function() {
-			console.log( "rest.user.ping: finished" );
+			// console.log( "rest.user.ping: finished" );
 		}
 
+		Rest.prototype.status('(RESTful): SENDING HANDSHAKE...', util.pack(data));
 		var post = $.post(url,data,success,dataType).done(done).fail(fail).always(always);
 
 	},//ping
 
-	// ------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------
 
 };//Rest.prototype.user
-//.bind(this)
 
 // ------------------------------------------------------------------------------------------------
 // END

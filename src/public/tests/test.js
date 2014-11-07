@@ -1,5 +1,11 @@
 
 // ------------------------------------------------------------------------------------------------
+// IMPORTS
+// ------------------------------------------------------------------------------------------------
+
+// var util = window.exports.Util;
+
+// ------------------------------------------------------------------------------------------------
 // UTIL
 // ------------------------------------------------------------------------------------------------
 
@@ -59,56 +65,60 @@ QUnit.asyncTest( "asynchronous test: Open a WebSocket Connection", function( ass
 
 // ------------------------------------------------------------------------------------------------
 
-QUnit.asyncTest( "Asynchronous test: WebSocket HELLO Message Received", function( assert ) {
+QUnit.asyncTest( "Asynchronous test: WebSocket GREET check", function( assert ) {
 	expect( 1 );
 
 	var util = window.exports.Util;
 	var host = 'ws://' + location.host + '/';
 	var ws = new WebSocket(host);
 
+	var pkg = util.pack({
+		  msg: 'hello',
+	 endpoint: '/user/greet',
+		token: '1234',
+		error: null
+	});
+
+	ws.send(pkg);
+
 	ws.onmessage = function(MsgEvt) {
 		var pkg = MsgEvt.data;
 		var msg = util.unpack(MsgEvt.data);
 
-		assert.ok( msg.msg == "HELLO" , "Greeting 'HELLO' Received!" );
+		assert.ok( msg.endpoint == "/user/greet" , "GREET Received!" );
 		QUnit.start();
 	};
 });
 
 // ------------------------------------------------------------------------------------------------
 
-QUnit.asyncTest( "Asynchronous test: WebSocket PING-PONG Message Received", function( assert ) {
-	expect( 2 );
+// QUnit.asyncTest( "Asynchronous test: WebSocket HANDSHAKE check", function( assert ) {
+// 	expect( 1 );
+// 	QUnit.stop();
 
-	var util = window.exports.Util;
-	var host = 'ws://' + location.host + '/';
-	var ws = new WebSocket(host);
+// 	var util = window.exports.Util;
+// 	var host = 'ws://' + location.host + '/';
+// 	var ws = new WebSocket(host);
 
-	var id = null;
+// 	var pkg = util.pack({
+// 		  msg: 'hello',
+// 		 name: 'name',
+// 	 endpoint: '/user/handshake',
+// 		token: '1234',
+// 		error: null
+// 	});
 
-	var pkg = util.pack({
-		  msg: 'PING',
-		 type: 'INIT',
-		token: '',
-		error: null
-	});
+// 	ws.send(pkg);
 
-	ws.onmessage = function(MsgEvt) {
-		var pkg = MsgEvt.data;
-		var msg = util.unpack(MsgEvt.data);
+// 	ws.onmessage = function(MsgEvt) {
+// 		QUnit.stop();
+// 		var pkg = MsgEvt.data;
+// 		var msg = util.unpack(MsgEvt.data);
 
-		if (msg.msg == 'HELLO') {
-			assert.ok( true , "Greeting 'HELLO' Received!" );
-			ws.send(pkg);
-		}
-
-		if (msg.msg == 'PONG') {
-			assert.ok( true , "PONG message received!" );
-			QUnit.start();
-		}
-	};
-
-});
+// 		assert.ok( msg.endpoint == '/user/handshake' , "HANDSHAKE Received!" );
+// 		QUnit.start();
+// 	};
+// });
 
 // ------------------------------------------------------------------------------------------------
 // END

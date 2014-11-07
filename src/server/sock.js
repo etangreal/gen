@@ -35,7 +35,7 @@ var self = module.exports = {
 	},
 
 	// --------------------------------------------------------------------------------------------
-	// ROUTE INCOMING MESSAGE
+	// ROUTE (INCOMING MESSAGE)
 	// --------------------------------------------------------------------------------------------
 
 	route: function(msg) {
@@ -46,6 +46,9 @@ var self = module.exports = {
 		}
 
 		switch(msg.endpoint) {
+			case '/user/greet':
+				self.user.greet(msg);
+				break;
 			case '/user/handshake':
 				self.user.handshake(msg);
 				break;
@@ -78,14 +81,35 @@ var self = module.exports = {
 
 		// ----------------------------------------------------------------------------------------
 
+		greet: function(msg) {
+			self.status('(WebSocket): GREET received...');
+
+			var name = store.find( msg.token );
+
+			var hello = "Hello, sorry if I've forgotten - what is your name again?";
+			if (name) 
+				hello = "Hello " + name + "!";
+
+			var reply = {
+				  msg: hello,
+			 endpoint: '/user/greet',
+				token: msg.token,
+				error: null
+			};
+
+			self.send(reply);
+		},
+
+		// ----------------------------------------------------------------------------------------
+
 		handshake: function(msg) {
-			self.status('(WebSocket): HANDSHAKE recieved...');
+			self.status('(WebSocket): HANDSHAKE received...');
 
 			var name = store.find( msg.token );
 			var token = name ? msg.token : uuid.v1();
 
-			if(!name) 
-				store.add(token, msg.msg);
+			if (!name)
+				store.add(token, msg.name);
 
 			var hello = 'Hello ' + msg.name + '!';
 				hello += name ?  ' welcome back!' : ' please to meet you :)';
@@ -100,7 +124,9 @@ var self = module.exports = {
 			self.send(reply);
 		},
 
-	}, //user
+		// ----------------------------------------------------------------------------------------
+
+	},//user
 
 	// --------------------------------------------------------------------------------------------
 	// EVENTS
