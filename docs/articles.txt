@@ -17,6 +17,9 @@
 		how-to-consume-json-post-data-in-an-express-application
 			stackoverflow.com/a/24635296/3159102
 
+		codeforgeek.com/2014/09/handle-get-post-request-express-4
+		hawkee.com/snippet/10141
+
 # -------------------------------------------------------------------------------------------------
 # EXPRESS.JS
 # -------------------------------------------------------------------------------------------------
@@ -43,6 +46,10 @@
 CLIENT-SIDE:
 	
 	tutorialspoint.com/html5/html5_websocket.htm
+	developer.mozilla.org/en-US/docs/Web/API/WebSocket
+	developer.mozilla.org/en-US/docs/WebSockets/Writing_WebSocket_client_applications
+	blog.teamtreehouse.com/an-introduction-to-websockets
+	stackoverflow.com/questions/11077857/what-are-long-polling-websockets-server-sent-events-sse-and-comet
 
 SERVER-SIDE:
 

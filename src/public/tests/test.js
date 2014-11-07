@@ -67,6 +67,7 @@ QUnit.asyncTest( "asynchronous test: Open a WebSocket Connection", function( ass
 
 QUnit.asyncTest( "Asynchronous test: WebSocket GREET check", function( assert ) {
 	expect( 1 );
+	QUnit.stop();
 
 	var util = window.exports.Util;
 	var host = 'ws://' + location.host + '/';
@@ -79,15 +80,18 @@ QUnit.asyncTest( "Asynchronous test: WebSocket GREET check", function( assert ) 
 		error: null
 	});
 
-	ws.send(pkg);
+	// ws.send(pkg);
 
 	ws.onmessage = function(MsgEvt) {
 		var pkg = MsgEvt.data;
 		var msg = util.unpack(MsgEvt.data);
 
+		// console.log('message, ' pkg);
+
 		assert.ok( msg.endpoint == "/user/greet" , "GREET Received!" );
 		QUnit.start();
 	};
+
 });
 
 // ------------------------------------------------------------------------------------------------
