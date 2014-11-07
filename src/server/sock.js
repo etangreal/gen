@@ -3,9 +3,10 @@
 // IMPORTS
 // ------------------------------------------------------------------------------------------------
 
-var util = require('../public/js/util').Util;
-var uuid = require('node-uuid');
-var store = require('./storage');
+var uuid 	= require('node-uuid');
+
+var util 	= require('../public/js/util').Util;
+var store 	= require('./storage');
 
 // ------------------------------------------------------------------------------------------------
 // MODULE
@@ -21,7 +22,7 @@ var self = module.exports = {
 		var pkg = util.pack(msg);
 		self._ws.send(pkg);
 
-		self.status('(WebSocket): Message sent...', pkg);
+		self.status('(WebSocket): Message SENT...', pkg);
 	},
 
 	// --------------------------------------------------------------------------------------------
@@ -34,58 +35,51 @@ var self = module.exports = {
 	},
 
 	// --------------------------------------------------------------------------------------------
-	// ROUTING
+	// ROUTE INCOMING MESSAGE
 	// --------------------------------------------------------------------------------------------
 
 	route: function(msg) {
 
 		if (!msg || !msg.endpoint) {
-			self.unknown(msg);
+			self.unknownMessage(msg);
 			return;
 		}
 
 		switch(msg.endpoint) {
-			case '/user/register':
-				self.user.register(msg);
-				break;
-			case '/user/greet':
-				self.user.greet(msg);
-				break;
-			case '/user/ping':
-				self.user.ping(msg);
+			case '/user/handshake':
+				self.user.handshake(msg);
 				break;
 			default:
-				self.unknown(msg);
+				self.unknownMessage(msg);
 		}
 
 	},//route
 
 	// --------------------------------------------------------------------------------------------
-	// USER
+
+	unknownMessage: function(msg) {
+		self.status('(WebSocket): UNKNOWN MESSAGE Received... ');
+
+			var reply = {
+				  msg: 'Unknown message: ' + msg.msg + ' with endpoint: ' + msg.endpoint,
+			 endpoint: '/unknown',
+				token: msg.token,
+				error: null
+			};
+
+		self.send(reply);
+	},
+
+	// --------------------------------------------------------------------------------------------
+	// API:USER
 	// --------------------------------------------------------------------------------------------
 
 	user: {
 
-		register: function(msg) {
-			self.status('(WebSocket): REGISTER request recieved...');
-
-			var name = msg.msg;
-			var token = uuid.v1();
-
-			var reply = {
-				  msg: name,
-			 endpoint: '/user/register',
-				token: token,
-				error: null
-			};
-
-			self.send(reply);
-		},
-
 		// ----------------------------------------------------------------------------------------
 
-		greet: function(msg) {
-			self.status('(WebSocket): GREETing recieved...');
+		handshake: function(msg) {
+			self.status('(WebSocket): HANDSHAKE recieved...');
 
 			var name = store.find( msg.token );
 			var token = name ? msg.token : uuid.v1();
@@ -98,7 +92,7 @@ var self = module.exports = {
 
 			var reply = {
 				  msg: hello,
-			 endpoint: '/user/greet',
+			 endpoint: '/user/handshake',
 				token: token,
 				error: null
 			};
@@ -106,37 +100,7 @@ var self = module.exports = {
 			self.send(reply);
 		},
 
-		// ----------------------------------------------------------------------------------------
-
-		ping: function(msg) {
-			self.status('(WebSocket): PING recieved...');
-
-			var reply = {
-				  msg: 'pong',
-			 endpoint: '/user/ping',
-				token: msg.token,
-				error: null
-			};
-
-			self.send(reply);
-		}
-
 	}, //user
-
-	// --------------------------------------------------------------------------------------------
-
-	unknown: function(msg) {
-		self.status('(WebSocket): UNKNOWN message from Client... ');
-
-			var reply = {
-				  msg: 'Unknown message: ' + msg.msg + ' with endpoint: ' + msg.endpoint,
-			 endpoint: '/unknown',
-				token: msg.token,
-				error: null
-			};
-
-		self.send(reply);
-	},
 
 	// --------------------------------------------------------------------------------------------
 	// EVENTS
@@ -166,43 +130,13 @@ var self = module.exports = {
 
 	onError: function(err) {
 		self.status('(WebSocket): Connection Error...', err.message);
-
-		//ToDo: stop polling...
 	},
 
 	// --------------------------------------------------------------------------------------------
 
 	onClose: function() {
 		self.status('(WebSocket): Connection Closed...', '');
-
-		// self.status('Server: Stop Polling...');
-		// clearInterval(this.id);
 	}
-
-	// --------------------------------------------------------------------------------------------
-	// SERVICE
-	// --------------------------------------------------------------------------------------------
-
-	/** /
-	poll: function(ws) {
-		self.status('(WebSocket): Started Polling...');
-
-		var id = setInterval( function() {
-
-			var msg = {
-				  msg: Date.now(),
-			 endpoint: '/user/poll',
-				token: null,
-				error: null
-			};
-
-			self.send(msg);
-			self.status('Server: Polling... ', msg);
-
-		}, 5000);
-
-		return id;
-	},//poll /**/
 
 	// --------------------------------------------------------------------------------------------
 

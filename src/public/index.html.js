@@ -41,18 +41,8 @@ var onLoad = function() {
 		sock.close(); 
 	});
 
-	$('#wsRegister').on('click', function() {
-		sock.register( $('#name').val() );
-	});
-
-	$('#wsGreet').on('click', function() {
-		console.log( $('#name').val() );
-
-		sock.greet( $('#name').val() );
-	});
-
-	$('#wsPing').on('click', function() {
-		sock.ping();
+	$('#wsHandshake').on('click', function() {
+		sock.handshake( $('#name').val() );
 	});
 
 	//REST Web Services

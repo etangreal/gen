@@ -84,69 +84,31 @@ Sock.prototype.status = function(prefix, msg) {
 // API
 // ------------------------------------------------------------------------------------------------
 
-Sock.prototype.register = function(name) {
+Sock.prototype.handshake = function(name) {
 	var self = this;
-	self.status('(WebSocket): Sending REGISTER request...');
-
-	self.send({
-		  msg: name,
-	 endpoint: '/user/register',
-		token: store.getToken(),
-		error: null
-	});
-}
-
-Sock.prototype.registerReceived = function(msg, pkg) {
-	var self = this;
-	self.status('(WebSocket): Sending REGISTER request...', pkg);
-}
-
-// ------------------------------------------------------------------------------------------------
-
-Sock.prototype.greet = function(name) {
-	var self = this;
-	self.status('(WebSocket): Sending GREETing...');
+	self.status('(WebSocket): SENDING HANDSHAKE...');
 
 	self.send({
 		  msg: 'hello',
 		 name: name,
-	 endpoint: '/user/greet',
+	 endpoint: '/user/handshake',
 		token: store.getToken(),
 		error: null
 	});
 }
 
-Sock.prototype.greetReceived = function(msg, pkg) {
+Sock.prototype.handshakeReceived = function(msg, pkg) {
 	var self = this;
-	self.status('(WebSocket): Received GREET reply from Server...', pkg);
+	self.status('(WebSocket): HANDSHAKE RECIEVED from Server...', pkg);
 
 	store.setToken(msg.token);
-	$('#token').val( msg.token );
+	$('#token').val(msg.token);
 }
 
 // ------------------------------------------------------------------------------------------------
 
-Sock.prototype.ping = function() {
-	var self = this;
-	self.status('(WebSocket): Sending PING...');
-
-	self.send({
-		  msg: 'ping',
-	 endpoint: '/user/ping',
-		token: store.getToken(),
-		error: null
-	});
-}
-
-Sock.prototype.pingReceived = function(msg, pkg) {
-	var self = this;
-	self.status('(WebSocket): Received PING from Server...', pkg);
-}
-
-// ------------------------------------------------------------------------------------------------
-
-Sock.prototype.unknownReceived = function(msg, pkg) {
-	self.status('(WebSocket): UNKNOWN message from Server... ', pkg);
+Sock.prototype.unknownMessageReceived = function(msg, pkg) {
+	self.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -155,24 +117,18 @@ Sock.prototype.unknownReceived = function(msg, pkg) {
 
 Sock.prototype.route = function(msg, pkg) {
 	var self = this;
-	
+
 	if (!msg || !msg.endpoint) {
-		self.unknownReceived(msg, pkg);
+		self.unknownMessageReceived(msg, pkg);
 		return;
 	}
 
 	switch(msg.endpoint) {
-		case '/user/register':
-			self.registerReceived(msg, pkg);
-			break;
-		case '/user/greet':
-			self.greetReceived(msg, pkg);
-			break;
-		case '/user/ping':
-			self.pingReceived(msg, pkg);
+		case '/user/handshake':
+			self.handshakeReceived(msg, pkg);
 			break;
 		default:
-			self.unknownReceived(msg, pkg);
+			self.unknownMessageReceived(msg, pkg);
 	}
 
 },//route
@@ -187,7 +143,7 @@ Sock.prototype.onOpen = function() { // WebSocket: connected.
 
 	self._isConnected = true;
 
-	self.greet( $('#name').val() );
+	self.handshake( $('#name').val() );
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -199,7 +155,7 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 	var msg = util.unpack(pkg);
 
 	if (msg.error) {
-		self.status('(WebSocket): Message received... however there was an ERROR in unpacking the message.', msg);
+		self.status('(WebSocket): Message received... however there was an ERROR in unpacking the message.', msg.error);
 		return;
 	}
 
@@ -211,7 +167,6 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 Sock.prototype.onClose = function() { // WebSocket: closed.
 	var self = this;
 	self.status('(WebSocket): Connection closed...');
-
 };
 
 // ------------------------------------------------------------------------------------------------
