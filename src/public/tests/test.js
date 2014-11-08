@@ -3,14 +3,14 @@
 // IMPORTS
 // ------------------------------------------------------------------------------------------------
 
-// var util = window.exports.Util;
+//var util = window.exports.Util;
 
 // ------------------------------------------------------------------------------------------------
 // UTIL
 // ------------------------------------------------------------------------------------------------
 
 QUnit.test( "Util test: pack/unpack", function( assert ) {
-	
+
 	var util = window.exports.Util;
 	var msg = {test: "test"};
 
@@ -61,16 +61,26 @@ QUnit.asyncTest( "asynchronous test: Open a WebSocket Connection", function( ass
 		QUnit.start();
 	};
 
+	ws.onerror = function(err) {
+		assert.ok(false, "websocket: error occurred... " + err.message);
+		QUnit.stop();
+	}
+
+	setTimeout(function() {
+		assert.ok(false, "Timeout occured, websocket connection never opened...");
+		QUnit.stop();
+	}, 1000);
+
 });
 
 // ------------------------------------------------------------------------------------------------
 
-QUnit.asyncTest( "Asynchronous test: WebSocket GREET check", function( assert ) {
+QUnit.asyncTest( 'Asynchronous test: WebSocket GREET check', function( assert ) {
 	expect( 1 );
-	QUnit.stop();
 
 	var util = window.exports.Util;
 	var host = 'ws://' + location.host + '/';
+
 	var ws = new WebSocket(host);
 
 	var pkg = util.pack({
@@ -80,49 +90,72 @@ QUnit.asyncTest( "Asynchronous test: WebSocket GREET check", function( assert ) 
 		error: null
 	});
 
-	// ws.send(pkg);
+	ws.onopen = function () { 
+		ws.send(pkg);
+	}
+
+	ws.onerror = function(err) {
+		assert.ok(false, "websocket: error occurred... " + err.message);
+		QUnit.stop();
+	}
 
 	ws.onmessage = function(MsgEvt) {
 		var pkg = MsgEvt.data;
 		var msg = util.unpack(MsgEvt.data);
 
-		// console.log('message, ' pkg);
-
-		assert.ok( msg.endpoint == "/user/greet" , "GREET Received!" );
+		assert.ok( msg.endpoint == "/user/greet" , "GREET received!");
 		QUnit.start();
 	};
 
-});
+	setTimeout(function() {
+		assert.ok(false, "Timeout occured, reply message wasn't received...");
+		QUnit.stop();
+	}, 1000);
+
+});//QUnit.asyncTest 'Asynchronous test: WebSocket GREET check'
 
 // ------------------------------------------------------------------------------------------------
 
-// QUnit.asyncTest( "Asynchronous test: WebSocket HANDSHAKE check", function( assert ) {
-// 	expect( 1 );
-// 	QUnit.stop();
+QUnit.asyncTest( 'Asynchronous test: WebSocket HANDSHAKE check', function( assert ) {
+	expect( 2 );
 
-// 	var util = window.exports.Util;
-// 	var host = 'ws://' + location.host + '/';
-// 	var ws = new WebSocket(host);
+	var util = window.exports.Util;
+	var host = 'ws://' + location.host + '/';
 
-// 	var pkg = util.pack({
-// 		  msg: 'hello',
-// 		 name: 'name',
-// 	 endpoint: '/user/handshake',
-// 		token: '1234',
-// 		error: null
-// 	});
+	var ws = new WebSocket(host);
 
-// 	ws.send(pkg);
+	var pkg = util.pack({
+		  msg: 'hello',
+		 name: 'test',
+	 endpoint: '/user/handshake',
+		token: '1234',
+		error: null
+	});
 
-// 	ws.onmessage = function(MsgEvt) {
-// 		QUnit.stop();
-// 		var pkg = MsgEvt.data;
-// 		var msg = util.unpack(MsgEvt.data);
+	ws.onopen = function () { 
+		ws.send(pkg);
+	}
 
-// 		assert.ok( msg.endpoint == '/user/handshake' , "HANDSHAKE Received!" );
-// 		QUnit.start();
-// 	};
-// });
+	ws.onerror = function(err) {
+		assert.ok(false, "websocket: error occurred... " + err.message);
+		QUnit.stop();
+	}
+
+	ws.onmessage = function(MsgEvt) {
+		var pkg = MsgEvt.data;
+		var msg = util.unpack(MsgEvt.data);
+
+		assert.ok( msg.endpoint == "/user/handshake" , "HANDSHAKE endpoint." );
+		assert.ok( msg.error == null , "HANDSHAKE error." );
+		QUnit.start();
+	};
+
+	setTimeout(function() {
+		assert.ok(false, "Timeout occured, reply message wasn't received...");
+		QUnit.stop();
+	}, 1000);
+
+});//QUnit.asyncTest 'Asynchronous test: WebSocket HANDSHAKE check'
 
 // ------------------------------------------------------------------------------------------------
 // END

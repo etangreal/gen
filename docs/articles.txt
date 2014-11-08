@@ -1,5 +1,18 @@
 
 # -------------------------------------------------------------------------------------------------
+# EXPRESS.JS
+# -------------------------------------------------------------------------------------------------
+
+	expressjs.com/4x/api.html
+
+# -------------------------------------------------------------------------------------------------
+# SCSS
+# -------------------------------------------------------------------------------------------------
+
+	thesassway.com/editorial/sass-vs-scss-which-syntax-is-better
+	sublime.wbond.net/packages/Syntax%20Highlighting%20for%20Sass
+
+# -------------------------------------------------------------------------------------------------
 # NODE.JS
 # -------------------------------------------------------------------------------------------------
 
@@ -19,19 +32,6 @@
 
 		codeforgeek.com/2014/09/handle-get-post-request-express-4
 		hawkee.com/snippet/10141
-
-# -------------------------------------------------------------------------------------------------
-# EXPRESS.JS
-# -------------------------------------------------------------------------------------------------
-
-	expressjs.com/4x/api.html
-
-# -------------------------------------------------------------------------------------------------
-# SCSS
-# -------------------------------------------------------------------------------------------------
-
-	thesassway.com/editorial/sass-vs-scss-which-syntax-is-better
-	sublime.wbond.net/packages/Syntax%20Highlighting%20for%20Sass
 
 # -------------------------------------------------------------------------------------------------
 # JSON REST
@@ -77,8 +77,12 @@ CLIENT-SIDE:
 	stackoverflow.com/questions/11077857/what-are-long-polling-websockets-server-sent-events-sse-and-comet
 	cjihrig.com/blog/how-to-use-websockets
 
+(BOTH)
+
 	NodeJS Websocket how to reconnect when server restarts
 		stackoverflow.com/questions/19691996/nodejs-websocket-how-to-reconnect-when-server-restarts
+
+	www.html5rocks.com/en/tutorials/websockets/basics
 
 SERVER-SIDE:
 
