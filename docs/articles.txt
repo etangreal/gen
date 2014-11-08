@@ -34,45 +34,6 @@
 	sublime.wbond.net/packages/Syntax%20Highlighting%20for%20Sass
 
 # -------------------------------------------------------------------------------------------------
-# GULP
-# -------------------------------------------------------------------------------------------------
-
-	tagtree.tv/gulp
-
-# -------------------------------------------------------------------------------------------------
-# WEBSOCKETS
-# -------------------------------------------------------------------------------------------------
-
-CLIENT-SIDE:
-	
-	tutorialspoint.com/html5/html5_websocket.htm
-	developer.mozilla.org/en-US/docs/Web/API/WebSocket
-	developer.mozilla.org/en-US/docs/WebSockets/Writing_WebSocket_client_applications
-	blog.teamtreehouse.com/an-introduction-to-websockets
-	stackoverflow.com/questions/11077857/what-are-long-polling-websockets-server-sent-events-sse-and-comet
-
-SERVER-SIDE:
-
-	einaros.github.io/ws
-	github.com/einaros/ws
-
-# -------------------------------------------------------------------------------------------------
-# QUNIT
-# -------------------------------------------------------------------------------------------------
-
-	qunitjs.com/cookbook
-
-	code.tutsplus.com/tutorials/how-to-test-your-javascript-code-with-qunit--net-9077
-
-	npmjs.org/package/qunit
-	stackoverflow.com/questions/11236543/how-do-use-node-qunit
-	shiftinginterests.wordpress.com/2011/08/29/sharing-qunit-tests-between-browsers-and-node-js
-
-	OTHER
-		www.andymatthews.net/read/2012/05/29/Unit-Testing-jQuery-Plugins-with-Grunt-and-QUnit
-		mwebhack.blogspot.ch/2011/06/nodejs-testing-frameworks.html
-
-# -------------------------------------------------------------------------------------------------
 # JSON REST
 # -------------------------------------------------------------------------------------------------
 
@@ -102,6 +63,52 @@ SERVER-SIDE:
 		developer.wordpress.com/docs/rest-api-javascript
 		hayageek.com/jquery-ajax-post
 		www.w3schools.com/jquery/ajax_post.asp
+
+# -------------------------------------------------------------------------------------------------
+# WEBSOCKETS
+# -------------------------------------------------------------------------------------------------
+
+CLIENT-SIDE:
+	
+	tutorialspoint.com/html5/html5_websocket.htm
+	developer.mozilla.org/en-US/docs/Web/API/WebSocket
+	developer.mozilla.org/en-US/docs/WebSockets/Writing_WebSocket_client_applications
+	blog.teamtreehouse.com/an-introduction-to-websockets
+	stackoverflow.com/questions/11077857/what-are-long-polling-websockets-server-sent-events-sse-and-comet
+	cjihrig.com/blog/how-to-use-websockets
+
+	NodeJS Websocket how to reconnect when server restarts
+		stackoverflow.com/questions/19691996/nodejs-websocket-how-to-reconnect-when-server-restarts
+
+SERVER-SIDE:
+
+	einaros.github.io/ws
+	github.com/einaros/ws
+
+	NodeJS Websocket how to reconnect when server restarts
+		stackoverflow.com/questions/19691996/nodejs-websocket-how-to-reconnect-when-server-restarts
+
+# -------------------------------------------------------------------------------------------------
+# QUNIT
+# -------------------------------------------------------------------------------------------------
+
+	qunitjs.com/cookbook
+
+	code.tutsplus.com/tutorials/how-to-test-your-javascript-code-with-qunit--net-9077
+
+	npmjs.org/package/qunit
+	stackoverflow.com/questions/11236543/how-do-use-node-qunit
+	shiftinginterests.wordpress.com/2011/08/29/sharing-qunit-tests-between-browsers-and-node-js
+
+	OTHER
+		www.andymatthews.net/read/2012/05/29/Unit-Testing-jQuery-Plugins-with-Grunt-and-QUnit
+		mwebhack.blogspot.ch/2011/06/nodejs-testing-frameworks.html
+
+# -------------------------------------------------------------------------------------------------
+# GULP
+# -------------------------------------------------------------------------------------------------
+
+	tagtree.tv/gulp
 
 # -------------------------------------------------------------------------------------------------
 # END

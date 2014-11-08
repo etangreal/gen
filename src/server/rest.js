@@ -15,6 +15,17 @@ var store 	= require('./storage');
 module.exports = function(app) {
 
 	// --------------------------------------------------------------------------------------------
+	// functions
+	// --------------------------------------------------------------------------------------------
+
+	var status = function(prefix, msg) {
+		console.log(prefix);
+
+		if (msg && msg !== '')
+			console.log(' --->', msg);
+	};
+
+	// --------------------------------------------------------------------------------------------
 	// paramenters
 	// --------------------------------------------------------------------------------------------
 
@@ -28,7 +39,7 @@ module.exports = function(app) {
 	// --------------------------------------------------------------------------------------------
 
 	app.post('/user/greet/:token?', function(req, res) {
-		console.log('(WebSocket): GREET received...', req.body);
+		status('(WebSocket): GREET received...', req.body);
 
 		var msg = req.body;
 		var name = store.find( req.token );
@@ -44,7 +55,7 @@ module.exports = function(app) {
 			error: null
 		}
 
-		console.log('(WebSocket): Replying to GREET ...', util.pack(reply));
+		status('(WebSocket): Replying to GREET ...', util.pack(reply));
 		res.json(reply);
 
 	});
@@ -52,7 +63,7 @@ module.exports = function(app) {
 	// --------------------------------------------------------------------------------------------
 
 	app.post('/user/handshake/:token?', function(req, res) {
-		console.log('(RESTful): HANDSHAKE received...', req.body);
+		status('(RESTful): HANDSHAKE received...', req.body);
 
 		var msg = req.body;
 		var name = store.find( req.token );
@@ -71,7 +82,7 @@ module.exports = function(app) {
 			error: null
 		}
 
-		console.log('(WebSocket): Replying to HANDSHAKE ...', util.pack(reply));
+		status('(WebSocket): Replying to HANDSHAKE ...', util.pack(reply));
 		res.json(reply);
 	});
 

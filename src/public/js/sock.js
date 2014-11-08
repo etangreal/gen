@@ -179,7 +179,7 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 		self.status('(WebSocket): Message received... however there was an ERROR in unpacking the message.', msg.error);
 		return;
 	}
-	
+
 	self.route(msg, pkg);
 };
 
