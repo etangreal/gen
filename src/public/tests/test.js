@@ -9,6 +9,8 @@
 // UTIL
 // ------------------------------------------------------------------------------------------------
 
+QUnit.module( "client/util.js" );
+
 QUnit.test( "Util test: pack/unpack", function( assert ) {
 
 	var util = window.exports.Util;
@@ -23,6 +25,8 @@ QUnit.test( "Util test: pack/unpack", function( assert ) {
 // ------------------------------------------------------------------------------------------------
 // STORAGE
 // ------------------------------------------------------------------------------------------------
+
+QUnit.module( "client/storage.js" );
 
 QUnit.test( "Storage test: isStorage", function( assert ) {
 
@@ -43,6 +47,8 @@ QUnit.test( "Storage test: isStorage", function( assert ) {
 // ------------------------------------------------------------------------------------------------
 // WEBSOCKETS
 // ------------------------------------------------------------------------------------------------
+
+QUnit.module( "client/sock.js" );
 
 QUnit.test( "WebSockets is supported by Browser", function( assert ) {
   assert.ok( true == ('WebSocket' in window), "Passed!" );

@@ -17,6 +17,7 @@ git push -u origin master
 
 npm install -g nodemon
 npm install -g qunit
+npm install -g yuidocjs
 
 # genioo/src/
 
