@@ -2,6 +2,7 @@
 **/.DS_Store
 **/nohup.dat
 
+docs/api
 src/node_modules
 
 build

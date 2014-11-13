@@ -1,0 +1,10 @@
+{
+	"name": "Gen WebSocket & RESTful API",
+	"description": "The Gen: A library for doing WebSocket, RESTful, communicaiton",
+	"version": "1.2.1",
+	"url": "http://github.com/etangreal/gen",
+	"options": {
+		"ignorePaths": ["./public/libs"],
+		"outdir": "../docs/api"
+	}
+}

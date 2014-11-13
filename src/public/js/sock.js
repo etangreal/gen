@@ -9,6 +9,12 @@ var store = window.exports.Storage;
 // CONSTRUCTOR
 // ------------------------------------------------------------------------------------------------
 
+	/**
+	 * A WebSocket wrapper + API
+	 *
+	 * @class Sock
+	 * @constructor
+	 */
 	function Sock() {
 		var self = this;
 
@@ -21,6 +27,14 @@ var store = window.exports.Storage;
 // ------------------------------------------------------------------------------------------------
 // METHODS
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * Establishes a websocket connection to the server
+ *
+ * @method connect
+ * @param {String} host The host url that the websocket will connect to. e.g. 'ws://localhost:8080/'
+ * @return
+ */
 
 Sock.prototype.connect = function(host) {
 	var self = this;
@@ -35,7 +49,12 @@ Sock.prototype.connect = function(host) {
 	self._ws 	 = ws;
 }
 
-// ------------------------------------------------------------------------------------------------
+/**
+ * Close the current websocket connection to the server
+ *
+ * @method close
+ * @return
+ */
 
 Sock.prototype.close = function() {
 	var self = this;
@@ -43,7 +62,13 @@ Sock.prototype.close = function() {
 	self._ws.close();
 }
 
-// ------------------------------------------------------------------------------------------------
+/**
+ * Sends a message over the websocket connection to the server
+ *
+ * @method send
+ * @param {String} msg The message to be sent. Formatted as JSON object.
+ * @return
+ */
 
 Sock.prototype.send = function(msg) {
 	var self = this;
@@ -59,11 +84,22 @@ Sock.prototype.send = function(msg) {
 	self.status('(WebSocket): Message sent...', pkg);
 }
 
-// ------------------------------------------------------------------------------------------------
+/**
+ * Outputs the status to html(#status) and to the console
+ *
+ * @method status
+ * @param {String} prefix The status message prefix. If blank (i.e. '') or 
+ * null/undefined it will not be printed.
+ * @param {String} msg The message object (in JSON format) that was sent/recieved. 
+ * If null/undefined it will not be printed.
+ * @return
+ */
 
 Sock.prototype.status = function(prefix, msg) {
 	// var self = this;
-	console.log(prefix);
+	if (prefix !== '')
+		console.log(prefix);
+
 	if (msg && msg !== '')
 		console.log(' ---> ', msg);
 
@@ -82,6 +118,18 @@ Sock.prototype.status = function(prefix, msg) {
 // ------------------------------------------------------------------------------------------------
 // ROUTING (INCOMING MESSAGES)
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * Routes the incomming message to the appropriate handler function
+ *
+ * @method route
+ * @param {String} msg The message object (in JSON format) that was sent/recieved. 
+ * If null/undefined it will not be printed.
+ * @param {String} pkg The message object as string that represents a JSON object.
+ * (i.e. JSON.Stringfy() was applied to it).
+ * If null/undefined it will not be printed.
+ * @return
+ */
 
 Sock.prototype.route = function(msg, pkg) {
 	var self = this;
@@ -106,6 +154,18 @@ Sock.prototype.route = function(msg, pkg) {
 
 // ------------------------------------------------------------------------------------------------
 
+/**
+ * The route function passes unknown messages to this function. 
+ *
+ * @method unknownMessageReceived
+ * @param {String} msg The message object (in JSON format) that was sent/recieved. 
+ * If null/undefined it will not be printed.
+ * @param {String} pkg The message object as string that represents a JSON object.
+ * (i.e. JSON.Stringfy() was applied to it).
+ * If null/undefined it will not be printed.
+ * @return
+ */
+
 Sock.prototype.unknownMessageReceived = function(msg, pkg) {
 	self.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
 };
@@ -113,6 +173,14 @@ Sock.prototype.unknownMessageReceived = function(msg, pkg) {
 // ------------------------------------------------------------------------------------------------
 // API
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * API: Sends a 'greeting' message to the server. The server will look at the token in the greeting
+ * and either respond with a 'welcome' message or 'unidentified' message
+ *
+ * @method greet
+ * @return
+ */
 
 Sock.prototype.greet = function() {
 	var self = this;
@@ -126,12 +194,35 @@ Sock.prototype.greet = function() {
 	});
 }
 
+/**
+ * API: The route function will route any replied 'greeting' received from the server to this function.
+ *
+ * @method greetReceived
+ * @param {String} msg The message object (in JSON format) that was sent/recieved. 
+ * If null/undefined it will not be printed.
+ * @param {String} pkg The message object as string that represents a JSON object.
+ * (i.e. JSON.Stringfy() was applied to it).
+ * If null/undefined it will not be printed.
+ * @return
+ */
+
 Sock.prototype.greetReceived = function(msg, pkg) {
 	var self = this;
 	self.status('(WebSocket): GREET RECIEVED from Server...', pkg);
 }
 
-// ------------------------------------------------------------------------------------------------
+/**
+ * API: Sends a 'handshake' message to the server. 
+ * The server will look at the name and token passed along in the handshake.
+ * 	If the token is recognized, the token and name is resave to storage.
+ * 	If no token was supplied by the client or the token was not identified the server will respond by 
+ * 	generating a new token and then registering token and the name.
+ * 	The server will send a reply message with the registered token to the client.
+ *
+ * @method handshake
+ * @param {String} name The name of the client
+ * @return
+ */
 
 Sock.prototype.handshake = function(name) {
 	var self = this;
@@ -146,6 +237,18 @@ Sock.prototype.handshake = function(name) {
 	});
 }
 
+/**
+ * API: The route function will route any replied 'handshake' received from the server to this function.
+ *
+ * @method handshakeReceived
+ * @param {String} msg The message object (in JSON format) that was sent/recieved. 
+ * If null/undefined it will not be printed.
+ * @param {String} pkg The message object as string that represents a JSON object.
+ * (i.e. JSON.Stringfy() was applied to it).
+ * If null/undefined it will not be printed.
+ * @return
+ */
+
 Sock.prototype.handshakeReceived = function(msg, pkg) {
 	var self = this;
 	self.status('(WebSocket): HANDSHAKE RECIEVED from Server...', pkg);
@@ -158,6 +261,13 @@ Sock.prototype.handshakeReceived = function(msg, pkg) {
 // EVENTS
 // ------------------------------------------------------------------------------------------------
 
+/**
+ * Fired when a the WebSocket connection is opened
+ *
+ * @event onOpen
+ * @return
+ */
+
 Sock.prototype.onOpen = function() { // WebSocket: connected.
 	var self = this;
 	self.status('(WebSocket): Connection opened...');
@@ -168,6 +278,13 @@ Sock.prototype.onOpen = function() { // WebSocket: connected.
 };
 
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * Event is fired when a message is received
+ *
+ * @event onMessage
+ * @return
+ */
 
 Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 	var self = this;
@@ -185,12 +302,26 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 
 // ------------------------------------------------------------------------------------------------
 
+/**
+ * Event is fired when the websocket is closed
+ *
+ * @event onClose
+ * @return
+ */
+
 Sock.prototype.onClose = function() { // WebSocket: closed.
 	var self = this;
 	self.status('(WebSocket): Connection closed...');
 };
 
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * Fired when a websocket error occurs...
+ *
+ * @event onError
+ * @return
+ */
 
 Sock.prototype.onError = function(err) { // WebSocket: error occured.
 	var self = this;

@@ -1,15 +1,43 @@
 
-// matteoagosti.com/blog/2013/02/24/writing-javascript-modules-for-both-browser-and-node
-// caolanmcmahon.com/posts/writing_for_node_and_the_browser
+// ------------------------------------------------------------------------------------------------
+// EXPORTS
+// ------------------------------------------------------------------------------------------------
+
+var __exports__ = 
+
+	(typeof exports !== 'undefined') ? 
+		exports : 
+		this['exports'] ? 
+			this['exports'] : 
+			this['exports'] = {};
 
 // ------------------------------------------------------------------------------------------------
 // UTIL
 // ------------------------------------------------------------------------------------------------
 
 (function(exports) {
-	exports = exports || {};
+
+	// --------------------------------------------------------------------------------------------
+	// Util
+	// --------------------------------------------------------------------------------------------
 
 	exports.Util = {
+
+		// ----------------------------------------------------------------------------------------
+
+		namespace: function (namespaceString) {
+			var parts = namespaceString.split('.'),
+			parent = window,
+			currentPart = '';
+
+			for(var i = 0, length = parts.length; i < length; i++) {
+				currentPart = parts[i];
+				parent[currentPart] = parent[currentPart] || {};
+				parent = parent[currentPart];
+			}
+
+			return parent;
+		}
 
 		// ----------------------------------------------------------------------------------------
 
@@ -32,12 +60,25 @@
 
 	};//exports.Util
 
-})( typeof exports !== 'undefined' ? 
-		exports : 
-		this['exports'] ? 
-			this['exports'] : 
-			this['exports'] = {} );
+	// --------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------------------------
-// END
-// ------------------------------------------------------------------------------------------------
+})( __exports__ );
+
+/* ------------------------------------------------------------------------------------------------
+## (DOCUMENTATION)
+## ------------------------------------------------------------------------------------------------
+
+	JavaScript Modules for both node.js and the browser
+		matteoagosti.com/blog/2013/02/24/writing-javascript-modules-for-both-browser-and-node
+		caolanmcmahon.com/posts/writing_for_node_and_the_browser
+
+	Module Pattern
+		addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript
+		adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html
+
+	Namespaces
+		elegantcode.com/2011/01/26/basic-javascript-part-8-namespaces
+
+## ------------------------------------------------------------------------------------------------
+## END
+## --------------------------------------------------------------------------------------------- */
