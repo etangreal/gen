@@ -1,10 +1,17 @@
 
 // ------------------------------------------------------------------------------------------------
-// METHODS
+// FUNCTIONS
 // ------------------------------------------------------------------------------------------------
 
-function initTabs() {
-	$('ul.tabs').each(function(){
+/**
+ * Initializes with the UI. Sets up tabs for any class that has class='.tabs'
+ *
+ * @method initTabs
+ * @return
+ */
+
+function initTabs() { 
+	$('ul.tabs').each(function() { 
 		// For each set of tabs, we want to keep track of
 		// which tab is active and it's associated content
 		var $active, $content, $links = $(this).find('a');
@@ -22,7 +29,7 @@ function initTabs() {
 		});
 
 		// Bind the click event handler
-		$(this).on('click', 'a', function(e){
+		$(this).on('click', 'a', function(e) {
 			// Make the old tab inactive.
 			$active.removeClass('active');
 			$content.hide();

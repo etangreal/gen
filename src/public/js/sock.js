@@ -1,3 +1,4 @@
+
 // ------------------------------------------------------------------------------------------------
 // IMPORTS
 // ------------------------------------------------------------------------------------------------
@@ -152,8 +153,6 @@ Sock.prototype.route = function(msg, pkg) {
 
 },//route
 
-// ------------------------------------------------------------------------------------------------
-
 /**
  * The route function passes unknown messages to this function. 
  *
@@ -277,8 +276,6 @@ Sock.prototype.onOpen = function() { // WebSocket: connected.
 	self.handshake( $('#name').val() );
 };
 
-// ------------------------------------------------------------------------------------------------
-
 /**
  * Event is fired when a message is received
  *
@@ -299,8 +296,6 @@ Sock.prototype.onMessage = function (MsgEvt) { // WebSocket: message received.
 
 	self.route(msg, pkg);
 };
-
-// ------------------------------------------------------------------------------------------------
 
 /**
  * Event is fired when the websocket is closed

@@ -17,13 +17,24 @@ var __exports__ =
 
 (function(exports) {
 
-	// --------------------------------------------------------------------------------------------
-	// Util
-	// --------------------------------------------------------------------------------------------
+	/**
+	 * Provides utility functions
+	 *
+	 * @class Util
+	 * @constructor
+	 */
 
 	exports.Util = {
 
-		// ----------------------------------------------------------------------------------------
+		/**
+		 * A function that will create namespaces for you. e.g. "hello.world" { hello: { world: [] } }
+		 *
+		 * @method namespace
+		 *
+		 * @param {String} namespaceString The "." (dot) separated string that is converted into a namespace
+		 *
+		 * @return {Object}
+		 */
 
 		namespace: function (namespaceString) {
 			var parts = namespaceString.split('.'),
@@ -39,28 +50,39 @@ var __exports__ =
 			return parent;
 		}
 
-		// ----------------------------------------------------------------------------------------
+		/**
+		 * Unpacks a stringified JSON object. If an error occurs it will return error object
+		 *
+		 * @method unpack
+		 *
+		 * @param {String} pkg stringified JSON object that will be parsed.
+		 *
+		 * @return {Object}
+		 */
 
 		unpack: function(pkg) {
 			try {
 				return JSON.parse(pkg);
 
 			} catch (e) {
-				return {error:'Invalid Json object.'};
+				return {error:'Invalid JSON object.'};
 			}
 		},
 
-		// ----------------------------------------------------------------------------------------
+		/**
+		 * Stringifies a JSON object
+		 *
+		 * @method pack
+		 *
+		 * @param {String} pkg JSON object that will be stringified.
+		 *
+		 */
 
 		pack: function(msg) {
 			return JSON.stringify(msg);
 		},
 
-		// ----------------------------------------------------------------------------------------
-
 	};//exports.Util
-
-	// --------------------------------------------------------------------------------------------
 
 })( __exports__ );
 

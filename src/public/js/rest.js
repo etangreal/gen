@@ -10,6 +10,13 @@ var storage = window.exports.Storage;
 // CONSTRUCTOR
 // ------------------------------------------------------------------------------------------------
 
+/**
+ * Provides API for connecting to the RESTful Web Services
+ *
+ * @class Rest
+ * @constructor
+ */
+
 function Rest() {
 	var self = this;
 }
@@ -19,6 +26,17 @@ Rest.prototype.constructor = Rest;
 // ------------------------------------------------------------------------------------------------
 // METHODS
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * Displays the status in html (#status) and in the console
+ *
+ * @method status
+ *
+ * @param {String} prefix The message prefix which will only be printed if it contains text.
+ * @param {String} msg The message (which will only be printed if it contains text)
+ *
+ * @return
+ */
 
 Rest.prototype.status = function(prefix, msg) {
 	console.log(prefix);
@@ -38,15 +56,30 @@ Rest.prototype.status = function(prefix, msg) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// REST.USER API
+// REST.USER (API)
 // ------------------------------------------------------------------------------------------------
+
+/**
+ * The user object provides functions for using the USER RESTful API 
+ *
+ * @property user
+ * @type Object
+ */
 
 Rest.prototype.user = {
 
 	// --------------------------------------------------------------------------------------------
 	// API
 	// --------------------------------------------------------------------------------------------
-	
+
+	/**
+	 * Sends a 'greet' message to the server via REST. Expects a greet reply message in return.
+	 *
+	 * @method greet
+	 *
+	 * @return
+	 */
+
 	greet: function() {
 
 		var token = store.getToken();
@@ -85,7 +118,13 @@ Rest.prototype.user = {
 
 	},//greet
 
-	// --------------------------------------------------------------------------------------------
+	/**
+	 * Sends a 'handshake' message to the server via REST. Expects a handshake reply message in return.
+	 *
+	 * @method handshake
+	 *
+	 * @return
+	 */
 
 	handshake: function(name) {
 		var self = this;
@@ -127,8 +166,6 @@ Rest.prototype.user = {
 		var post = $.post(url,data,success,dataType).done(done).fail(fail).always(always);
 
 	},//ping
-
-	// --------------------------------------------------------------------------------------------
 
 };//Rest.prototype.user
 

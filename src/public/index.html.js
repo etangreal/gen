@@ -13,6 +13,13 @@ var rest = new Rest();
 // EVENTS
 // ------------------------------------------------------------------------------------------------
 
+/**
+ * Fires on the window's load event
+ *
+ * @event onLoad
+ *
+ */
+
 var onLoad = function() {
 
 	$('#token').val( store.getToken() );
