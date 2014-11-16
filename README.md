@@ -12,7 +12,17 @@ Testing Web Socket &amp; RESTful Web Services
 	npm start
 	npm test
 
+# DOCUMENTATION
+
+	cd src && YUIDoc .
+
 # VIEW
 
+	Website:
 	http://localhost:8080
+
+	Tests:
 	http://localhost:8080/test.html
+
+	Documentation:
+	cd docs/api && open ./index.html

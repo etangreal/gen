@@ -1,9 +1,9 @@
 
 // ------------------------------------------------------------------------------------------------
-// EXPORTS
+// DECLARATIONS
 // ------------------------------------------------------------------------------------------------
 
-var __exports__ = 
+var __exports__ = __exports__ || 
 
 	(typeof exports !== 'undefined') ? 
 		exports : 
@@ -27,7 +27,7 @@ var __exports__ =
 	exports.Util = {
 
 		/**
-		 * A function that will create namespaces for you. e.g. "hello.world" { hello: { world: [] } }
+		 * A function that will create namespaces for you. e.g. "hello.world" { hello: { world: {} }
 		 *
 		 * @method namespace
 		 *
@@ -48,7 +48,7 @@ var __exports__ =
 			}
 
 			return parent;
-		}
+		},
 
 		/**
 		 * Unpacks a stringified JSON object. If an error occurs it will return error object

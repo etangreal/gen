@@ -14,7 +14,8 @@ var rest = new Rest();
 // ------------------------------------------------------------------------------------------------
 
 /**
- * Fires on the window's load event
+ * Event handler for the window's onload event.
+ *	Used hooking-up UI to javascript code, particularly UI events
  *
  * @event onLoad
  *
@@ -78,7 +79,8 @@ var onLoad = function() {
 // INIT
 // ------------------------------------------------------------------------------------------------
 
-initTabs();
+// Initialize the tabs
+ui.initTabs();
 
 window.onload = onLoad;
 

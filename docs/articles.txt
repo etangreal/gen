@@ -26,7 +26,7 @@
 		debugmode.net/2014/03/31/understanding-routing-of-expressjs-in-node-js
 		scotch.io/tutorials/javascript/learn-to-use-the-new-router-in-expressjs-4
 		www.npmjs.org/package/body-parser#installation
-		
+
 		how-to-consume-json-post-data-in-an-express-application
 			stackoverflow.com/a/24635296/3159102
 
@@ -42,6 +42,26 @@
  		github.com/azat-co/rest-api-express
 
 # -------------------------------------------------------------------------------------------------
+# DOCUMENTATION
+# -------------------------------------------------------------------------------------------------
+
+	JSDoc
+ 		usejsdoc.org
+
+ 	YUIDoc
+ 		yui.github.io/yuidoc
+
+ 		TUTORIALS
+ 			code.tutsplus.com/tutorials/documenting-javascript-with-yuidoc--net-25324
+
+ 			Stephen Woods: Creating Beautiful Documentation with YUI Doc
+ 				youtube.com/watch?v=ScJKw8l5TS4
+
+ 		BUILD
+ 			tech.pro/tutorial/1729/easy-javascript-documentation-with-yuidocs-and-gruntjs
+ 			codebelt.com/javascript/yuidoc-javascript-documentation-tutorial-gruntjs
+
+# -------------------------------------------------------------------------------------------------
 # JAVASCRIPT
 # -------------------------------------------------------------------------------------------------
 
@@ -53,7 +73,7 @@
 		blog.tompawlak.org/generate-unique-identifier-nodejs-javascript
 
 	TABS TUTORIAL
-		www.jacklmoore.com/notes/jquery-tabs
+		jacklmoore.com/notes/jquery-tabs
 
 	ACCESSING REST API FROM JAVASCRIPT
 		api.jquery.com/jquery.ajax
@@ -65,6 +85,9 @@
 		www.w3schools.com/jquery/ajax_post.asp
 
 	NAMESPACES & MODULES & OBJECTS
+		javascriptweblog.wordpress.com/2010/12/07/namespacing-in-javascript
+		michaux.ca/articles/javascript-namespacing
+		
 		kenneth-truyers.net/2013/04/27/javascript-namespaces-and-modules
 		github.com/tfmontague/definitive-module-pattern
 		inniepress.blogspot.ch/2014/07/definitive-module-pattern.html
