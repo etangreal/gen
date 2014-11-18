@@ -1,13 +1,13 @@
 
 // ------------------------------------------------------------------------------------------------
-// DECLARATIONS
+// IMPORTS
 // ------------------------------------------------------------------------------------------------
 
-var util = window.exports.Util;
-var store = window.exports.Storage;
+var app 		= app || {};
+	app.util 	= app.util || window.exports.Util;
+	app.storage = app.storage || window.exports.Storage;
 
 var sock = new Sock();
-var rest = new Rest();
 
 // ------------------------------------------------------------------------------------------------
 // EVENTS
@@ -61,11 +61,11 @@ var onLoad = function() {
 	$('#httpHost').val('http://' + location.host + '/');
 
 	$('#httpGreet').on('click', function() {
-		rest.user.greet();
+		app.rest.user.greet();
 	});
 
 	$('#httpHandshake').on('click', function() {
-		rest.user.handshake( $('#name').val() );
+		app.rest.user.handshake( $('#name').val() );
 	});
 
 	//Status

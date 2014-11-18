@@ -1,8 +1,5 @@
 ___________________________________________________________________________________________________
-
-Hello Ernst,
-
-Here is the technical test for you !
+Assignment:
 
 Scenario:
 	A company has a an R&D project to explore a web-sockets module-based architecture using NodeJS. 
@@ -14,11 +11,8 @@ Criteria to follow are the following:
 		The server does not push HTML fragments. 
 		The server data-transmission technology should allow an easy interface with mobile clients 
 		that could be native, web or hybrid. (for this test we only test a web client)
-
 	2 - Qunit must be used to unit test the client side connecting to the server with a web socket (asynchronously).
-
 	3 - Server side can use express in conjunction with with ws (https://www.npmjs.org/package/ws) and NOT socket.IO.
-
 	4 - client side javascript does not use any abstraction web socket libraries but pure native web socket object.
 	5 - no template libraries (ex: moustache, brackets or alike). Web-client must be pure jQuery.
 	6 - no Bootstrap pollution. Just pure jQuery/javascript and handmade CSS.
@@ -45,27 +39,11 @@ A plus will be:
 
 Schedule:
 	Working 3 hour per day for 5 days should be enough to achieve the objectives. 
-	If you need more time just let me know. 
+	If you need more time just let me know.
 
-Let me know when you plan to start, also with Emilia we are looking for a spot in our weekly schedule 
-so that you can come to visit us.
-
-Cheers,
-Marco
-
-Genioo
-Marco Falsitta
-
-Genioo AG
-	Bundesplatz 1
-	CH-6300 Zug
-	   Tel: +41 41 410 72 72
-	Mobile: +41 79 504 89 38
-	   Web: www.genioo.com
 ___________________________________________________________________________________________________
+Feedback:
 
-Ernst,
-	
 	I was looking at the current repo. 
 
 	I expect the final project to be more simple in term of architecture. 
@@ -87,32 +65,27 @@ on index.html loading, the web socket connection must be immediate and automatic
 
 on restart, I expect the same message to be recreated, a connection id must be persistent … maybe the message could say “Connection reopened” instead of “Connection opened”.
 
-I am sending you an example . It has no persistence re-connections. 
-
-Marco
 __________________________________________________________________________________________________
+Response:
 
 There is one use case I'm not sure about though - and that is how to manage a dead connection...
-       For example if the server restarts, the client does not know the connection is dead - and subsequently has no "onclose" event.
-      Subsequently when the client tries to send a message, it simply gets no response...
+	For example if the server restarts, the client does not know the connection is dead - and subsequently has no "onclose" event.
+	Subsequently when the client tries to send a message, it simply gets no response...
 
 I'm also still working on one of the test-cases async testing the websocket which gives me an error - not sure why tho.
 
-Anyways, feedback/suggestions would be appreciated :) 
-
-Ernst 
 __________________________________________________________________________________________________
+Response:
 
 When the server crash the client web-socket triggers an onError event with an “abnormal closing” error code. That might be used to “suppose” that the server is not available now but might be available in a short time. 
 An heartbeat mechanism can be triggered when the onError (no connection) is triggered and every 3 seconds the the client try to reconnect. 
 
-Marco
 ___________________________________________________________________________________________________
+Response:
 
 Yes thats what I was hoping for - however the onError doesn't seem to trigger in this case... although I might have done something wrong :p.
 Ah yes heartbeat might work nicely, or perhaps a timeout on the message response (after which you just reopen the connection). Will try it :)
 
-Ernst
 ___________________________________________________________________________________________________
 
 

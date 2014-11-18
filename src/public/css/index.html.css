@@ -10,7 +10,8 @@ div {
   width: 250px; }
 
 .status_container {
-  max-height: 600px; }
+  font-size: 12px;
+  max-height: 800px; }
 
 .status {
   background: lightyellow; }

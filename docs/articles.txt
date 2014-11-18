@@ -84,9 +84,10 @@
 		hayageek.com/jquery-ajax-post
 		www.w3schools.com/jquery/ajax_post.asp
 
-	NAMESPACES & MODULES & OBJECTS
+	NAMESPACES & MODULES
 		javascriptweblog.wordpress.com/2010/12/07/namespacing-in-javascript
 		michaux.ca/articles/javascript-namespacing
+		sitepoint.com/my-favorite-javascript-design-pattern
 		
 		kenneth-truyers.net/2013/04/27/javascript-namespaces-and-modules
 		github.com/tfmontague/definitive-module-pattern
@@ -94,6 +95,17 @@
 		addyosmani.com/resources/essentialjsdesignpatterns/book
 		rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code
 		adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html
+
+	OBJECTS
+
+		stackoverflow.com/questions/5179271/javascript-constructors-using-javascript-object-literal-notation
+
+		developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects
+		developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Details_of_the_Object_Model
+		developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_Revisited
+
+	VALID VARIABLE NAMES
+		mothereff.in/js-variables
 
 # -------------------------------------------------------------------------------------------------
 # WEBSOCKETS
