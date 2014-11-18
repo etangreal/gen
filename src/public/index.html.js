@@ -7,8 +7,6 @@ var app 		= app || {};
 	app.util 	= app.util || window.exports.Util;
 	app.storage = app.storage || window.exports.Storage;
 
-var sock = new Sock();
-
 // ------------------------------------------------------------------------------------------------
 // EVENTS
 // ------------------------------------------------------------------------------------------------
@@ -23,10 +21,10 @@ var sock = new Sock();
 
 var onLoad = function() {
 
-	$('#token').val( store.getToken() );
+	$('#token').val( app.store.getToken() );
 	$('#clearToken').on('click', function() {
-		store.clearToken();
-		$('#token').val( store.getToken() );
+		app.store.clearToken();
+		$('#token').val( app.store.getToken() );
 	});
 
 	//Web Socket Support
@@ -37,24 +35,24 @@ var onLoad = function() {
 	var host = 'ws://' + location.host + '/';
 
 	if (supported)
-		sock.connect(host);
+		app.sock.connect(host);
 
 	$('#wsHost').val(host);
 
 	$('#wsConnect').on('click', function() { 
-		sock.connect( $('#wsHost').val() ); 
+		app.sock.connect( $('#wsHost').val() ); 
 	});
 
 	$('#wsDisconnect').on('click', function() { 
-		sock.close(); 
+		app.sock.close(); 
 	});
 
 	$('#wsGreet').on('click', function() {
-		sock.greet();
+		app.sock.greet();
 	});
 
 	$('#wsHandshake').on('click', function() {
-		sock.handshake( $('#name').val() );
+		app.sock.handshake( $('#name').val() );
 	});
 
 	//REST Web Services
@@ -80,7 +78,7 @@ var onLoad = function() {
 // ------------------------------------------------------------------------------------------------
 
 // Initialize the tabs
-ui.initTabs();
+app.ui.initTabs();
 
 window.onload = onLoad;
 

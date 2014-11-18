@@ -34,6 +34,7 @@ var app 		= app || {};
 	 * Provides API for connecting to the RESTful Web Services
 	 *
 	 * @class Rest
+	 * @constructor
 	 */
 
 	function Rest(util, store) {
@@ -44,6 +45,7 @@ var app 		= app || {};
 		// self.store = store || self.store;
 	}
 
+	// Rest.prototype.constructor = Rest;
 	var me = Rest.prototype = {
 
 		// ----------------------------------------------------------------------------------------
@@ -174,7 +176,8 @@ var app 		= app || {};
 		 */
 
 		status: function(prefix, msg) {
-			var self = this;
+			if (!prefix) prefix = '';
+			if (!msg) msg = '';
 
 			console.log('STATUS:', prefix, msg);
 
@@ -210,9 +213,7 @@ var app 		= app || {};
 			 * @return
 			 */
 
-			greet: function() { 
-				var self = this;
-
+			greet: function() {
 				var	token 	= me.store.getToken(),
 					url 	= me.config.greetUrl + (token ? ('/' + token) : '');
 
@@ -259,8 +260,6 @@ var app 		= app || {};
 			 */
 
 			handshake: function(name) {
-				var self = this;
-
 				var	token 	= me.store.getToken(),
 				   $token 	= me.config.$token(), 
 					url 	= me.config.handshakeUrl + (token ? ("/" + token) : "");
@@ -302,7 +301,7 @@ var app 		= app || {};
 
 		},//user
 
-	};//Rest
+	};//Rest.prototype
 
 	// --------------------------------------------------------------------------------------------
 	// EXPORT REST

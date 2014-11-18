@@ -3,7 +3,7 @@
 // EXPORTS
 // ------------------------------------------------------------------------------------------------
 
-var __exports__ = 
+var __exports__ = __exports__ ||
 
 	(typeof exports !== 'undefined') ? 
 		exports : 
