@@ -24,7 +24,7 @@ var app = app || {};
 	/**
 	 * UI utility functions for initializing/manipulating the user interface
 	 *
-	 * @class ui
+	 * @class UI
 	 */
 
 	function UI() {
@@ -41,7 +41,7 @@ var app = app || {};
 		 * Configuration data for Rest
 		 * 
 		 * @property config
-		 # @type Object
+		 * @type Object
 		 */
 
 		config: {

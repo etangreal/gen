@@ -53,19 +53,19 @@ var app 		= app || {};
 		// ----------------------------------------------------------------------------------------
 
 		/**
-		 * IMPORTED: utility
+		 * Utilities (imported module)
 		 * 
 		 * @property util
-		 # @type Object
+		 * @type Object
 		 */
 
 		util: app.util,
 
 		/**
-		 * IMPORTED: storage
+		 * Storage (imported module)
 		 * 
 		 * @property store
-		 # @type Object
+		 * @type Object
 		 */
 
 		store: app.store,
@@ -78,7 +78,7 @@ var app 		= app || {};
 		 * Configuration data for Rest
 		 * 
 		 * @property config
-		 # @type Object
+		 * @type Object
 		 */
 
 		config: {
