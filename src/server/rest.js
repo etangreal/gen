@@ -63,74 +63,77 @@ module.exports = function(app) {
 	/**
 	 * A REST endpoint for exchanging a greeting.
 	 *	The client will greet the server for two reasons:
-	 *		1) To see if the server is available
-	 *		2) To server if the server recognizes the client
-	 * 
-	 * @method post '/user/greet/:token?'
-	 * 
-	 * @param {String} token (optional): A token which uniquely identifies a client
-	 * @param {Object} A handshake message which contains: {
-	 * 	msg(String): The message, mainly unimportant, in this case simply 'hello'
-	 *	name(String): Name of the client
-	 * 	endpoint(String): The URI for this endpoint (unnecessary for REST, used with WebSockets)
-	 *	type(String): Can either be 'request' or 'response'
-	 *	token(String): Uniquely identifies a client
-	 *	error(String): If there is any error this property will contain the message, otherwise null.
-	 * }
-	 * 
+	 *		1) See if the server is available
+	 *		2) See if the server recognizes the client
+	 *
+	 * @method greet
+	 *
+	 * @param {Object} msg
+	 *	A handshake message which contains: {
+  	 *		 msg (String): The message, which is mainly for logging
+ 	 *		name (String): Name of the client
+  	 *	endpoint (String): The URI for this endpoint (unnecessary for REST, used with WebSockets)
+ 	 *		type (String): Can either be 'request' or 'response'
+ 	 *	   token (String): Uniquely identifies a client
+ 	 *	   error (String): If there is any error this property will contain the message, otherwise null.
+	 * 	}
+	 *
+	 * @param {String} token
+	 *	(optional): A token which uniquely identifies a client
+	 *
 	 * @return {Object}
 	 */
 
-	app.post('/user/greet/:token?', function(req, res) {
-		status('(WebSocket): GREET received...', req.body);
+	function greet(msg, token) {
+		status('(WebSocket): GREET received...', msg);
 
-		var msg = req.body;
-		var name = store.find( req.token );
+		var name = store.find( token );
 
 		var hello = "Hello, sorry if I've forgotten - what is your name again?";
 		if (name)
 			hello = "Hello " + name + "!";
 
 		var reply = {
-			  msg: hello,
-		 endpoint: '/user/greet',
-		 	 type: 'response',
-			token: msg.token,
-			error: null
+			 msg: hello,
+		endpoint: '/user/greet',
+			type: 'response',
+		   token: msg.token,
+		   error: null
 		}
 
 		status('(WebSocket): Replying to GREET ...', util.pack(reply));
-		res.json(reply);
+		return reply;
+	}
+
+	app.post('/user/greet/:token?', function(req, res) {
+		res.json( greet(req.body, req.token) );
 	});
 
-	// --------------------------------------------------------------------------------------------
-
 	/**
-	 * A REST endpoint for exchanging a handshake.
+	 * Handles a the REST endpoint for exchanging a handshake.
 	 *	The client handshake with the server in order to:
-	 *		1) Give the server its name which the server will then register along with a uniquely generate token
-	 *		2) 
+	 *		1) Register its name & token
+	 *		2) If the client does not have a token, the server will generate one and return it to the client
 	 *
-	 * @method app.post '/user/handshake/:token?'
-	 * 
-	 * @param {String} token An optional token which uniquely identifies a client
-	 * @param {Object} A handshake message which contains: {
-	 * 	msg(String): The message, which is mainly for logging
-	 *	name(String): Name of the client
-	 * 	endpoint(String): The URI for this endpoint (unnecessary for REST, used with WebSockets)
-	 *	type(String): Can either be 'request' or 'response'
-	 *	token(String): Uniquely identifies a client
-	 *	error(String): If there is any error this property will contain the message, otherwise null.
-	 * }
-	 * 
+	 * @method handshake
+	 *
+	 * @param {Object} msg 
+	 *	A handshake message which contains: {
+  	 *		 msg (String): The message, which is mainly for logging
+ 	 *		name (String): Name of the client
+  	 *	endpoint (String): The URI for this endpoint (unnecessary for REST, used with WebSockets)
+ 	 *		type (String): Can either be 'request' or 'response'
+ 	 *	   token (String): Uniquely identifies a client
+ 	 *	   error (String): If there is any error this property will contain the message, otherwise null.
+	 * 	}
+	 *
 	 * @return {Object}
 	 */
 
-	app.post('/user/handshake/:token?', function(req, res) {
-		status('(RESTful): HANDSHAKE received...', req.body);
+	function handshake(msg, token) {
+		status('(RESTful): HANDSHAKE received...', msg);
 
-		var msg = req.body;
-		var name = store.find( msg.token );
+		var name = store.find( token );
 		var token = name ? msg.token : uuid.v1();
 
 		if (!name)
@@ -147,7 +150,11 @@ module.exports = function(app) {
 		}
 
 		status('(WebSocket): Replying to HANDSHAKE ...', util.pack(reply));
-		res.json(reply);
+		return reply
+	}
+
+	app.post('/user/handshake/:token?', function(req, res) { 
+		res.json( handshake(req.body, req.token ) );
 	});
 
 };//module.export
