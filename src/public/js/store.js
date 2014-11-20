@@ -1,31 +1,29 @@
 
 // ------------------------------------------------------------------------------------------------
-// EXPORTS
+// STORE (CLIENT-SIDE: HTML5 STORAGE)
 // ------------------------------------------------------------------------------------------------
 
-var __exports__ = __exports__ ||
+var app = (function(app, exports) {
 
-	(typeof exports !== 'undefined') ? 
-		exports : 
-		this['exports'] ? 
-			this['exports'] : 
-			this['exports'] = {};
+	app = app || {};
 
-// ------------------------------------------------------------------------------------------------
-// HTML5 STORAGE (Client)
-// ------------------------------------------------------------------------------------------------
-
-(function(exports) {
+	// --------------------------------------------------------------------------------------------
+	// CLASS
+	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * Provides functions for storing user data (currently the token)
 	 *
-	 * @class Storage
+	 * @class Store
 	 * @constructor
 	 *
 	 */
 
-	var self = exports.Storage = {
+	function Store() {
+
+	}
+
+	var me = Store.prototype = {
 
 		/**
 		 * Checks if HTML5 storage is available
@@ -48,7 +46,7 @@ var __exports__ = __exports__ ||
 		 */
 
 		isToken: function(token) {
-			var t = self.getToken();
+			var t = me.getToken();
 			return (t && t == token);
 		},
 
@@ -90,9 +88,22 @@ var __exports__ = __exports__ ||
 			localStorage.setItem('token', null);
 		}
 
-	};//exports.Storage
+	};//Store.prototype
 
-})( __exports__ );
+	// --------------------------------------------------------------------------------------------
+	// EXPORTS
+	// --------------------------------------------------------------------------------------------
+
+	exports.Store = Store;
+	app.store = new Store();
+
+	return app;
+
+})(app, (typeof exports !== 'undefined') ? 
+			exports : 
+			this['exports'] ? 
+				this['exports'] : 
+				this['exports'] = {} );
 
 // ------------------------------------------------------------------------------------------------
 // END

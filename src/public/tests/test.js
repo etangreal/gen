@@ -1,11 +1,5 @@
 
 // ------------------------------------------------------------------------------------------------
-// IMPORTS
-// ------------------------------------------------------------------------------------------------
-
-//var util = window.exports.Util;
-
-// ------------------------------------------------------------------------------------------------
 // UTIL
 // ------------------------------------------------------------------------------------------------
 
@@ -13,7 +7,7 @@ QUnit.module( "client/util.js" );
 
 QUnit.test( "Util test: pack/unpack", function( assert ) {
 
-	var util = window.exports.Util;
+	var util = new window.exports.Util();
 	var msg = {test: "test"};
 
 	var pkg = util.pack(msg);
@@ -26,11 +20,11 @@ QUnit.test( "Util test: pack/unpack", function( assert ) {
 // STORAGE
 // ------------------------------------------------------------------------------------------------
 
-QUnit.module( "client/storage.js" );
+QUnit.module( "client/store.js" );
 
 QUnit.test( "Storage test: isStorage", function( assert ) {
 
-	var store = window.exports.Storage;
+	var store = new window.exports.Store();
 	var token = '1234';
 
 	assert.ok( true == store.isStorage(), "store.isStorage() Passed!" );
@@ -45,7 +39,7 @@ QUnit.test( "Storage test: isStorage", function( assert ) {
 });
 
 // ------------------------------------------------------------------------------------------------
-// WEBSOCKETS
+// SOCK
 // ------------------------------------------------------------------------------------------------
 
 QUnit.module( "client/sock.js" );
@@ -84,7 +78,7 @@ QUnit.asyncTest( "asynchronous test: Open a WebSocket Connection", function( ass
 QUnit.asyncTest( 'Asynchronous test: WebSocket GREET check', function( assert ) {
 	expect( 1 );
 
-	var util = window.exports.Util;
+	var util = new (window.exports.Util)();
 	var host = 'ws://' + location.host + '/';
 
 	var ws = new WebSocket(host);
@@ -125,7 +119,7 @@ QUnit.asyncTest( 'Asynchronous test: WebSocket GREET check', function( assert ) 
 QUnit.asyncTest( 'Asynchronous test: WebSocket HANDSHAKE check', function( assert ) {
 	expect( 2 );
 
-	var util = window.exports.Util;
+	var util = new window.exports.Util();
 	var host = 'ws://' + location.host + '/';
 
 	var ws = new WebSocket(host);
