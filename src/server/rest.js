@@ -97,10 +97,16 @@ var context = (function(context) {
 		 */
 
 		status: function(prefix, msg) {
-			console.log(prefix);
+			prefix 	= prefix || '';
+			msg 	= msg 	 || '';
 
-			if (msg && msg !== '')
-				console.log(' --->', msg);
+			// if (prefix && prefix !== '')
+			// 	console.log(prefix);
+
+			// if (msg && msg !== '')
+			// 	console.log(' --->', msg);
+
+			console.log('STATUS:', prefix, msg);
 		},
 
 		// ----------------------------------------------------------------------------------------
@@ -196,7 +202,7 @@ var context = (function(context) {
 			return reply
 		}
 
-	}//me
+	}//ME
 
 	// --------------------------------------------------------------------------------------------
 	// PUBLIC (CLASS PROTOTYPE)
@@ -205,7 +211,7 @@ var context = (function(context) {
 	Rest.prototype = {
 			greet: me.greet,
 		handshake: me.handshake,
-	}//Rest.prototype
+	}//REST.PROTOTYPE
 
 	// --------------------------------------------------------------------------------------------
 	// EXPORTS
