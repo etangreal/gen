@@ -1,160 +1,80 @@
 
-var app = (function(app, $, exports) {
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// CONTEXT
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-	app 		= app || {};
-	app.util 	= app.util || new exports.Util();
-	app.store 	= app.store || new exports.Storage();
-
-	// --------------------------------------------------------------------------------------------
-	// CHECK
-	// --------------------------------------------------------------------------------------------
-
-	if (!app.util)
-		throw('rest.js: object app.util not found.');
-
-	if(!app.store)
-		throw('rest.js: object app.store not found.');
+var context = (function(context) {
 
 	// --------------------------------------------------------------------------------------------
-	// CLASS
+	// CHECKS
 	// --------------------------------------------------------------------------------------------
 
-	/**
-	 * Provides API for connecting to the RESTful Web Services
-	 *
-	 * @class Rest
-	 * @constructor
-	 */
+	if (!context.app) 		throw('rest.js (client) | app undefined.');
+	if (!context.exports) 	throw('rest.js (client) | app undefined.');
 
-	function Rest(util, store) {
-		var self = this;
+	// --------------------------------------------------------------------------------------------
+	// APP
+	// --------------------------------------------------------------------------------------------
 
-		// ToDo: See if this actually works...
-		// self.util = util || self.util;
-		// self.store = store || self.store;
-	}
+	var app 	 	= context.app 	|| {};
+		app.util 	= app.util 		|| exports && new exports.Util();
+		app.store 	= app.store 	|| exports && new exports.Store();
 
-	// Rest.prototype.constructor = Rest;
-	var me = Rest.prototype = {
+	// --------------------------------------------------------------------------------------------
+	// UI
+	// --------------------------------------------------------------------------------------------
 
-		// ----------------------------------------------------------------------------------------
-		// DEPENDANCIES
-		// ----------------------------------------------------------------------------------------
+	var ui = context.ui || {
 
 		/**
-		 * Utilities (imported module)
-		 * 
-		 * @property util
-		 * @type Object
+		 * A jQuery object of HTML element id='status'
+		 *
+		 * @method $status
+		 * @return {Object} A jQuery object for #status
+		 *
 		 */
 
-		util: app.util,
+		$status: function() {
+			try {
+				return $('#status');
+			} catch(e) {
+				throw('Rest.config: Could not find #status. ' + e.message);
+			}
+		},
 
 		/**
-		 * Storage (imported module)
-		 * 
-		 * @property store
-		 * @type Object
+		 * A jQuery object of HTML element with id='token'
+		 *
+		 * @method $token
+		 * @return {Object} A jQuery object for #token
+		 *
 		 */
 
-		store: app.store,
-
-		// ----------------------------------------------------------------------------------------
-		// CONFIG
-		// ----------------------------------------------------------------------------------------
+		$token: function() {
+			try {
+				return $('#token');
+			} catch(e) {
+				throw('Rest.config: Could not find #token. ' + e.message);
+			}
+		},
 
 		/**
-		 * Configuration data for Rest
-		 * 
-		 * @property config
-		 * @type Object
+		 * A jQuery object of HTML element with id='name'
+		 *
+		 * @method $name
+		 * @return {Object} A jQuery object for #name
 		 */
 
-		config: {
-
-			/**
-			 * A jQuery object of HTML element id='status'
-			 *
-			 * @method $status
-			 * @return {Object} A jQuery object for #status
-			 */
-
-			$status: function() {
-				try {
-					return $('#status');
-				} catch(e) {
-					throw('Rest.config: Could not find #status. ' + e.message);
-				}
-			},
-
-			/**
-			 * A jQuery object of HTML element with id='token'
-			 *
-			 * @method $token
-			 * @return {Object} A jQuery object for #token
-			 */
-
-			$token: function() {
-				try {
-					return $('#token');
-				} catch(e) {
-					throw('Rest.config: Could not find #token. ' + e.message);
-				}
-			},
-
-			/**
-			 * Ajax datatype to be used
-			 *
-			 * @property dataType
-			 * @type String
-			 */
-
-			dataType: 'json',
-
-			/**
-			 * The endpoint for the user/greet
-			 *
-			 * @property greetEndpoint
-			 * @type String
-			 */
-
-			greetEndpoint: '/user/greet',
-
-			/**
-			 * The url for the user/greet endpoint
-			 *
-			 * @property greetUrl
-			 * @type String
-			 */
-
-			greetUrl: 'http://localhost:8080/user/greet',
-
-			/**
-			 * The endpoint for the user/handshake
-			 *
-			 * @property handshakeUrl
-			 * @type String
-			 */
-
-			handshakeUrl: 'http://localhost:8080/user/handshake',
-
-			/**
-			 * The url for the user/handshake endpoint
-			 *
-			 * @property handshakeUrl
-			 * @type String
-			 */
-
-			handshakeEndpoint: '/user/handshake'
-
-		},//config
-
-		// ----------------------------------------------------------------------------------------
-		// METHODS
-		// ----------------------------------------------------------------------------------------
+		$name: function() {
+			try {
+				return $('#name');
+			} catch(e) {
+				throw('Rest.config: Could not find #name. ' + e.message);
+			}
+		},
 
 		/**
-		 * Displays the status in the console and on the page using the element with id='status'
+		 * Displays the status in the console and on the page using the element with id='status'.
 		 *
 		 * @method status
 		 *
@@ -165,26 +85,168 @@ var app = (function(app, $, exports) {
 		 */
 
 		status: function(prefix, msg) {
-			if (!prefix) prefix = '';
-			if (!msg) msg = '';
+
+			var $status =  ui.$status(),
+				 html 	= $status.html();
+				 prefix	=  prefix || '';
+				 msg 	=  msg || '';
 
 			console.log('STATUS:', prefix, msg);
-
-			var $status   = me.config.$status(),
-				 html 	  = $status.html();
 
 			html = (html == '&nbsp;') ? '' : html + '<br /> ' ;
 			html += prefix + ' ' + msg;
 
 			$status.html(html);
-		},//status
+
+		},//STATUS
+
+	}//UI
+
+	// --------------------------------------------------------------------------------------------
+	// CONFIG
+	// --------------------------------------------------------------------------------------------
+
+	var config = context.config || {
+
+		/**
+		 * Ajax datatype to be used
+		 *
+		 * @property dataType
+		 * @type String
+		 *
+		 */
+
+		dataType: 'json',
+
+		/**
+		 * The endpoint for the user/greet
+		 *
+		 * @property greetEndpoint
+		 * @type String
+		 *
+		 */
+
+		greetEndpoint: '/user/greet',
+
+		/**
+		 * The url for the user/greet endpoint
+		 *
+		 * @property greetUrl
+		 * @type String
+		 *
+		 */
+
+		greetUrl: 'http://localhost:8080/user/greet',
+
+		/**
+		 * The endpoint for the user/handshake
+		 *
+		 * @property handshakeUrl
+		 * @type String
+		 *
+		 */
+
+		handshakeUrl: 'http://localhost:8080/user/handshake',
+
+		/**
+		 * The url for the user/handshake endpoint
+		 *
+		 * @property handshakeUrl
+		 * @type String
+		 *
+		 */
+
+		handshakeEndpoint: '/user/handshake'
+
+	};//CONFIG
+
+	// --------------------------------------------------------------------------------------------
+	// EXPORT (CONTEXT)
+	// --------------------------------------------------------------------------------------------
+
+	return {
+		  $: context.$,
+		app: app,
+	exports: context.exports || {},
+	 config: config,
+		 ui: ui
+	}
+
+})(context || {
+		  $: $,
+		app: app || {},
+	exports: (typeof exports !== 'undefined') ?
+				exports :
+				this['exports'] ?
+					this['exports'] : 
+					this['exports'] = {}
+});
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// REST (CLIENT)
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+var app = (function(context) {
+	//"use strict";
+
+	// --------------------------------------------------------------------------------------------
+	// CHECKS
+	// --------------------------------------------------------------------------------------------
+
+	if (!context) 			throw('rest.js | Context undefined!');
+	if (!context.$) 		throw('rest.js | jQuery undefined!');
+	if (!context.app) 		throw('rest.js | app undefined!');
+	if (!context.exports) 	throw('rest.js | exports undefined!');
+	if (!context.config)	throw('rest.js | config undefined!');
+	if (!context.ui)		throw('rest.js | config undefined!');
+
+	// --------------------------------------------------------------------------------------------
+	// DECLARATIONS
+	// --------------------------------------------------------------------------------------------
+
+	var $ 		= context.$;
+	var app 	= context.app;
+	var util 	= app.util;
+	var store 	= app.store;
+	var exports = context.exports;
+	var config  = context.config;
+	var ui 		= context.ui;
+
+	// --------------------------------------------------------------------------------------------
+	// CHECKS
+	// --------------------------------------------------------------------------------------------
+
+	if (!util) 				throw('rest.js | util undefined!');
+	if (!store) 			throw('rest.js | store undefined!');
+
+	// --------------------------------------------------------------------------------------------
+	// CLASS
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Provides API for connecting to the RESTful Web Services
+	 *
+	 * @class Rest
+	 * @constructor
+	 *
+	 */
+
+	function Rest() {
+
+	}
+
+	// --------------------------------------------------------------------------------------------
+	// PRIVATE
+	// --------------------------------------------------------------------------------------------
+
+	var me = {
 
 		// ----------------------------------------------------------------------------------------
-		// API
+		// USER
 		// ----------------------------------------------------------------------------------------
 
 		/**
-		 * The user object provides functions for using the USER RESTful API 
+		 * The 'user' object provides functions for user related RESTful API
 		 *
 		 * @property user
 		 * @type Object
@@ -193,9 +255,13 @@ var app = (function(app, $, exports) {
 
 		user: {
 
+			// ------------------------------------------------------------------------------------
+			// GREET
+			// ------------------------------------------------------------------------------------
+
 			/**
-			 * Sends a 'greet' message to the server via REST. 
-			 *	Expects a greet reply message in return.
+			 * Sends a 'greet' message to the server via REST.
+			 *	Expects a reply.
 			 *
 			 * @method greet
 			 *
@@ -203,44 +269,90 @@ var app = (function(app, $, exports) {
 			 */
 
 			greet: function() {
-				var	token 	= me.store.getToken(),
-					url 	= me.config.greetUrl + (token ? ('/' + token) : '');
+				var	token 	= store.getToken(),
+					url 	= config.greetUrl + (token ? ('/' + token) : '');
 
 				var data 	= {
 					  msg: 'hello',
-				 endpoint: me.config.greetEndpoint,
+				 endpoint: config.greetEndpoint,
 					token: token,
 					error: null
 				}
 
-				var success = function(data,status) {
-					// console.log('rest.user.greet: success', data);
-					me.status('(RESTful): GREET RECIEVED from Server...', me.util.pack(data));
-				}
+				ui.status('(RESTful): SENDING GREET...', util.pack(data));
 
-				var done = function(data) {
-					// console.log('rest.user.greet: done', data);
-				}
-
-				var fail = function(jqXHR, textStatus, error) {
-					// console.log('rest.user.greet: error');
-				}
-
-				var always = function() {
-					// console.log('rest.user.greet: finished');
-				}
-
-				me.status('(RESTful): SENDING GREET...', me.util.pack(data));
-
-				var post = $.post(url, data, success, me.config.dataType)
-								.done(done)
-								.fail(fail)
-								.always(always);
-
-			},//greet
+				var post = $.post(url, data, me.user.onGreetSuccess, config.dataType)
+								.done(me.user.onGreetDone)
+								.fail(me.user.onGreetFail)
+								.always(me.user.onGreetAlways);
+			},
 
 			/**
-			 * Sends a 'handshake' message to the server via REST. 
+			 * Fires if the post was successful.
+			 *
+			 * @event onGreetSuccess
+			 *
+			 * @param data {Object} A JSON object
+			 * @param status {String} A status message
+			 * @param xhr {Object} A jQuery XHR object
+			 *
+			 */
+
+			onGreetSuccess: function(data,status,xhr) {
+				// console.log('rest.user.greet: success', data);
+				ui.status('(RESTful): GREET RECIEVED from Server...', util.pack(data));
+			},
+
+			/**
+			 * Fires after the 'success' event.
+			 *	a.k.a 'second success' event.
+			 *
+			 * @event onGreetDone
+			 *
+			 * @param data {Object} A JSON object
+			 * @param status {String} A status message
+			 * @param xhr {Object} A jQuery XHR object
+			 *
+			 */
+
+			onGreetDone: function(data,status,xhr) {
+				// console.log('rest.user.greet: done', data);
+			},
+
+			/**
+			 * Fires if the post failed.
+			 *
+			 * @event onGreetFail
+			 *
+			 * @param xhr {Object} A jQuery XHR object
+			 * @param status {String} reason why the 'user.greet' post failed
+			 * @param error {Objec} error object
+			 *
+			 */
+
+			onGreetFail: function(xhr, status, error) {
+				// console.log('rest.user.greet: error');
+			},
+
+			/**
+			 * Always fires as the last event of the post, whether the post fails/suceeds.
+			 *
+			 * @param dataOrXhr {Object} Either the data or a jQuery XHR object
+			 * @param status {String} An status message
+			 * @param xhrOrError {Object} Either a jQuery XHR object or and the error thrown
+			 *
+			 */
+
+			onGreetAlways: function(dataOrXhr, status, xhrOrError) {
+				// console.log('rest.user.greet: finished');
+			},
+
+			// ------------------------------------------------------------------------------------
+			// HANDSHAKE
+			// ------------------------------------------------------------------------------------
+
+			/**
+			 * Sends a 'handshake' message to the server via RESTful post. 
 			 *	Expects a handshake reply message in return.
 			 *
 			 * @method handshake
@@ -249,48 +361,108 @@ var app = (function(app, $, exports) {
 			 */
 
 			handshake: function(name) {
-				var	token 	= me.store.getToken(),
-				   $token 	= me.config.$token(), 
-					url 	= me.config.handshakeUrl + (token ? ("/" + token) : "");
+				var	token 	= store.getToken(), 
+					url 	= config.handshakeUrl + (token ? ("/" + token) : "");
 
 				var data 	= {
 					  msg: 'hello',
 					 name: name,
-				 endpoint: me.config.handshakeEndpoint,
+				 endpoint: config.handshakeEndpoint,
 					token: token,
 					error: null
 				}
 
-				var success = function(data,status) {
-					me.status('(RESTful): HANDSHAKE RECIEVED from Server...', me.util.pack(data));
-					me.store.setToken(data.token);
-					$token.val(data.token);
-				}
+				ui.status('(RESTful): SENDING HANDSHAKE...', util.pack(data));
 
-				var done = function(data) {
-					//console.log('rest.user.ping: second success', data);
-				}
+				var post = $.post(url, data, me.user.onHandshakeSuccess, config.dataType)
+								.done(me.user.onHandshakeDone)
+								.fail(me.user.onHandshakeFail)
+								.always(me.user.onHandshakeAlways);
+			},
 
-				var fail = function(jqXHR, textStatus, error) {
-					// console.log( "rest.user.ping: error");
-				}
+			/**
+			 * Fires if the post was successful.
+			 *
+			 * @event onHandshakeSuccess
+			 *
+			 * @param data {Object} A JSON object
+			 * @param status {String} A status message
+			 * @param xhr {Object} A jQuery XHR object
+			 *
+			 */
 
-				var always = function() {
-					// console.log( "rest.user.ping: finished" );
-				}
+			onHandshakeSuccess: function(data, status, xhr) {
+				var $token 	= ui.$token();
 
-				me.status('(RESTful): SENDING HANDSHAKE...', me.util.pack(data));
+				ui.status('(RESTful): HANDSHAKE RECIEVED from Server...', util.pack(data));
+				store.setToken(data.token);
+				$token.val(data.token);
+			},
 
-				var post = $.post(url, data, success, me.config.dataType)
-								.done(done)
-								.fail(fail)
-								.always(always);
+			/**
+			 * Fires if the post is done.
+			 *	a.k.a 'second success' event.
+			 *
+			 * @event onHandshakeDone
+			 *
+			 * @param data {Object} A JSON object
+			 * @param status {String} A plain text status message
+			 * @param xhr {Object} A jQuery XHR object
+			 *
+			 */
 
-			},//ping
+			onHandshakeDone: function(data, status, xhr) {
+				//console.log('rest.user.handshake: second success', data);
+			},
 
-		},//user
+			/**
+			 * Fires if the post failed.
+			 *
+			 * @event onHandshakeFail
+			 *
+			 * @param xhr {Object} A jQuery XHR object
+			 * @param status {String} An error status message 
+			 * @param error {Object} The error thrown
+			 *
+			 */
 
-	};//Rest.prototype
+			onHandshakeFail: function(xhr, status, error) {
+				// console.log( "rest.user.handshake: error");
+			},
+
+			/**
+			 * Always fires as the last event of the post, whether the post fails/suceeds.
+			 *
+			 * @event onHandshakeAlways
+			 *
+			 * @param dataOrXhr {Object} Either the data or a jQuery XHR object
+			 * @param status {String} An status message
+			 * @param xhrOrError {Object} Either a jQuery XHR object or and the error thrown
+			 *
+			 */
+
+			onHandshakeAlways: function(dataOrXhr, status, xhrOrError) {
+				// console.log( "rest.user.handshake: finished" );
+			},
+
+		},//ME.USER
+
+	};//ME (PRIVATE)
+
+	// --------------------------------------------------------------------------------------------
+	// PUBLIC (CLASS PROTOTYPE)
+	// --------------------------------------------------------------------------------------------
+
+	Rest.prototype = {
+
+		user: {
+
+				greet: me.user.greet,
+			handshake: me.user.handshake
+
+		}//USER
+
+	}//REST.PROTOTYPE
 
 	// --------------------------------------------------------------------------------------------
 	// EXPORT
@@ -301,11 +473,7 @@ var app = (function(app, $, exports) {
 
 	return app;
 
-})(app, $, (typeof exports !== 'undefined') ? 
-				exports : 
-				this['exports'] ?
-					this['exports'] : 
-					this['exports'] = {} );
+})(context);
 
 /* ------------------------------------------------------------------------------------------------
 ## (DOCUMENTATION)

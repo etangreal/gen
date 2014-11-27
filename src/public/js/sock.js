@@ -1,33 +1,226 @@
 
-// ------------------------------------------------------------------------------------------------
-// WEBSOCKET
-// ------------------------------------------------------------------------------------------------
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// CONTEXT
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-var app = (function(app, $, exports) {
-
-	app = app || {};
-	app.util 	= app.util || new exports.Util();
-	app.store 	= app.store || new exports.Storage();
+var context = (function(context) {
 
 	// --------------------------------------------------------------------------------------------
-	// CHECK
+	// CHECKS
 	// --------------------------------------------------------------------------------------------
 
-	if (!app.util)
-		throw('rest.js: object app.util not found.');
-
-	if(!app.store)
-		throw('rest.js: object app.store not found.');
+	if (!context.app) 		throw('rest.js (server) | app undefined.');
 
 	// --------------------------------------------------------------------------------------------
-	// PRIVATE
+	// APP
 	// --------------------------------------------------------------------------------------------
 
-	var _isConnected = false;
-	var _ws = null;
+	var app 	 	= context.app 	|| {};
+		app.util 	= app.util 		|| exports && new exports.Util();
+		app.store 	= app.store 	|| exports && new exports.Store();
 
 	// --------------------------------------------------------------------------------------------
-	// SOCK
+	// UI
+	// --------------------------------------------------------------------------------------------
+
+	var ui = context.ui || {
+
+		/**
+		 * A jQuery object of HTML element id='status'
+		 *
+		 * @method $status
+		 * @return {Object} A jQuery object for #status
+		 *
+		 */
+
+		$status: function() {
+			try {
+				return $('#status');
+			} catch(e) {
+				throw('Rest.config: Could not find #status. ' + e.message);
+			}
+		},
+
+		/**
+		 * A jQuery object of HTML element with id='token'
+		 *
+		 * @method $token
+		 * @return {Object} A jQuery object for #token
+		 *
+		 */
+
+		$token: function() {
+			try {
+				return $('#token');
+			} catch(e) {
+				throw('Rest.config: Could not find #token. ' + e.message);
+			}
+		},
+
+		/**
+		 * A jQuery object of HTML element with id='name'
+		 *
+		 * @method $name
+		 * @return {Object} A jQuery object for #name
+		 */
+
+		$name: function() {
+			try {
+				return $('#name');
+			} catch(e) {
+				throw('Rest.config: Could not find #name. ' + e.message);
+			}
+		},
+
+		/**
+		 * Displays the status in the console and on the page using the element with id='status'.
+		 *
+		 * @method status
+		 *
+		 * @param {String} prefix The message prefix which will only be printed if it contains text.
+		 * @param {String} msg The message (which will only be printed if it contains text)
+		 *
+		 * @return
+		 */
+
+		status: function(prefix, msg) {
+
+			var $status =  ui.$status(),
+				 html 	= $status.html();
+				 prefix	=  prefix || '';
+				 msg 	=  msg || '';
+
+			console.log('STATUS:', prefix, msg);
+
+			html = (html == '&nbsp;') ? '' : html + '<br /> ' ;
+			html += prefix + ' ' + msg;
+
+			$status.html(html);
+
+		},//STATUS
+
+	}//UI
+
+	// --------------------------------------------------------------------------------------------
+	// CONFIG
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Configuration data for Rest
+	 * 
+	 * @property config
+	 * @type Object
+	 */
+
+	var config = context.config || {
+
+		/**
+		 * Ajax datatype to be used
+		 *
+		 * @property dataType
+		 * @type String
+		 */
+
+		dataType: 'json',
+
+		/**
+		 * The endpoint for the user/greet
+		 *
+		 * @property greetEndpoint
+		 * @type String
+		 */
+
+		greetEndpoint: '/user/greet',
+
+		/**
+		 * The url for the user/greet endpoint
+		 *
+		 * @property greetUrl
+		 * @type String
+		 */
+
+		greetUrl: 'http://localhost:8080/user/greet',
+
+		/**
+		 * The endpoint for the user/handshake
+		 *
+		 * @property handshakeUrl
+		 * @type String
+		 */
+
+		handshakeUrl: 'http://localhost:8080/user/handshake',
+
+		/**
+		 * The url for the user/handshake endpoint
+		 *
+		 * @property handshakeUrl
+		 * @type String
+		 */
+
+		handshakeEndpoint: '/user/handshake'
+
+	}//CONFIG
+
+	// --------------------------------------------------------------------------------------------
+	// EXPORT (CONTEXT)
+	// --------------------------------------------------------------------------------------------
+
+	return {
+		  $: context.$,
+		app: app,
+	exports: context.exports || {},
+	 config: config,
+		 ui: ui
+	}
+
+})(context || {
+		  $: $,
+		app: app || {},
+	exports: (typeof exports !== 'undefined') ?
+				exports :
+				this['exports'] ?
+					this['exports'] : 
+					this['exports'] = {}
+});
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// SOCK (CLIENT)
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+var app = (function(context) {
+
+	// --------------------------------------------------------------------------------------------
+	// CHECKS
+	// --------------------------------------------------------------------------------------------
+
+	if (!context) 			throw('rest.js | Context undefined!');
+	if (!context.$) 		throw('rest.js | jQuery undefined!');
+	if (!context.app) 		throw('rest.js | app undefined!');
+	if (!context.exports) 	throw('rest.js | exports undefined!');
+	if (!context.config)	throw('rest.js | config undefined!');
+	if (!context.ui)		throw('rest.js | config undefined!');
+
+	// --------------------------------------------------------------------------------------------
+	// DECLARATIONS
+	// --------------------------------------------------------------------------------------------
+
+	var $ 		= context.$;
+	var app 	= context.app;
+	var util 	= app.util;
+	var store 	= app.store;
+	var exports = context.exports;
+	var config  = context.config;
+	var ui 		= context.ui;
+
+	// --------------------------------------------------------------------------------------------
+	// CHECKS
+	// --------------------------------------------------------------------------------------------
+
+	if (!util) 				throw('rest.js | util undefined!');
+	if (!store) 			throw('rest.js | store undefined!');
+
+	// --------------------------------------------------------------------------------------------
+	// CLASS (SOCK)
 	// --------------------------------------------------------------------------------------------
 
 	/**
@@ -35,177 +228,28 @@ var app = (function(app, $, exports) {
 	 *
 	 * @class Sock
 	 * @constructor
+	 *
 	 */
 
 	function Sock() {
-		// var self = this;
+
 	}
 
-	// Sock.prototype.constructor = Sock;
+	// --------------------------------------------------------------------------------------------
+	// PRIVATE
+	// --------------------------------------------------------------------------------------------
 
-	var me = Sock.prototype = {
-
-		// ----------------------------------------------------------------------------------------
-		// IMPORTS
-		// ----------------------------------------------------------------------------------------
-
-		/**
-		 * IMPORTED: utility
-		 * 
-		 * @property util
-		 # @type Object
-		 */
-
-		util: app.util,
-
-		/**
-		 * IMPORTED: storage
-		 * 
-		 * @property store
-		 # @type Object
-		 */
-
-		store: app.store,
+	var me = {
 
 		// ----------------------------------------------------------------------------------------
-		// CONFIG
+		// PROPERTIES
 		// ----------------------------------------------------------------------------------------
 
-		/**
-		 * Configuration data for Rest
-		 * 
-		 * @property config
-		 # @type Object
-		 */
-
-		config: {
-
-			/**
-			 * A jQuery object of HTML element id='status'
-			 *
-			 * @method $status
-			 * @return {Object} A jQuery object for #status
-			 */
-
-			$status: function() {
-				try {
-					return $('#status');
-				} catch(e) {
-					throw('Rest.config: Could not find #status. ' + e.message);
-				}
-			},
-
-			/**
-			 * A jQuery object of HTML element with id='token'
-			 *
-			 * @method $token
-			 * @return {Object} A jQuery object for #token
-			 */
-
-			$token: function() {
-				try {
-					return $('#token');
-				} catch(e) {
-					throw('Rest.config: Could not find #token. ' + e.message);
-				}
-			},
-
-			/**
-			 * A jQuery object of HTML element with id='name'
-			 *
-			 * @method $name
-			 * @return {Object} A jQuery object for #name
-			 */
-
-			$name: function() {
-				try {
-					return $('#name');
-				} catch(e) {
-					throw('Rest.config: Could not find #name. ' + e.message);
-				}
-			},
-
-			/**
-			 * Ajax datatype to be used
-			 *
-			 * @property dataType
-			 * @type String
-			 */
-
-			dataType: 'json',
-
-			/**
-			 * The endpoint for the user/greet
-			 *
-			 * @property greetEndpoint
-			 * @type String
-			 */
-
-			greetEndpoint: '/user/greet',
-
-			/**
-			 * The url for the user/greet endpoint
-			 *
-			 * @property greetUrl
-			 * @type String
-			 */
-
-			greetUrl: 'http://localhost:8080/user/greet',
-
-			/**
-			 * The endpoint for the user/handshake
-			 *
-			 * @property handshakeUrl
-			 * @type String
-			 */
-
-			handshakeUrl: 'http://localhost:8080/user/handshake',
-
-			/**
-			 * The url for the user/handshake endpoint
-			 *
-			 * @property handshakeUrl
-			 * @type String
-			 */
-
-			handshakeEndpoint: '/user/handshake'
-
-		},//config
+		ws: null,
 
 		// ----------------------------------------------------------------------------------------
-		// METHODS
+		// METHODS (WEBSOCKET)
 		// ----------------------------------------------------------------------------------------
-
-		/**
-		 * Outputs the status to html(#status) and to the console
-		 *
-		 * @method status
-		 *
-		 * @param {String} prefix
-		 *	The status message prefix. If blank (i.e. '') or 
-		 * 	null/undefined it will not be printed.
-		 *
-		 * @param {String} msg
-		 *	The message object (in JSON format) that was sent/recieved. 
-		 * 	If null/undefined it will not be printed.
-		 *
-		 * @return
-		 */
-
-		status: function(prefix, msg) {
-			if (!prefix) prefix = '';
-			if (!msg) msg = '';
-
-			console.log('STATUS:', prefix, msg);
-
-			var $status   = me.config.$status(),
-				 html 	  = $status.html();
-
-			html = (html == '&nbsp;') ? '' : html + '<br /> ' ;
-			html += prefix + ' ' + msg;
-
-			$status.html(html);
-		},
 
 		/**
 		 * Establishes a websocket connection to the server
@@ -214,19 +258,24 @@ var app = (function(app, $, exports) {
 		 *
 		 * @param {String} host 
 		 *	The host url that the websocket will connect to. e.g. 'ws://localhost:8080/'
-		 *	
+		 *
 		 * @return
 		 */
 
 		connect: function(host) {
-			me.status('(WebSocket): Connecting...');
+			ui.status('(WebSocket): Connecting...');
+
+			if (me.ws) { //if there is an open websocket
+				ui.status('(WebSocket): Closing previous connection...')
+				me.ws.close();
+			}
 
 			//open a web socket
-			_ws 		 	= new WebSocket(host);
-			_ws.onopen 	 	= me.onOpen.bind(self);
-			_ws.onmessage 	= me.onMessage.bind(self);
-			_ws.onclose 	= me.onClose.bind(self);
-			_ws.onerror 	= me.onError.bind(self);
+			me.ws 		 	= new WebSocket(host);
+			me.ws.onopen 	= me.onOpen;
+			me.ws.onmessage = me.onMessage;
+			me.ws.onclose 	= me.onClose;
+			me.ws.onerror 	= me.onError;
 		},
 
 		/**
@@ -241,15 +290,15 @@ var app = (function(app, $, exports) {
 		 */
 
 		send: function(msg) {
-			if (!_isConnected) {
-				me.status('(WebSocket): No connection!');
+			if (!me.ws) {
+				ui.status('(WebSocket): No connection!');
 				return;
 			}
 
-			var pkg = me.util.pack(msg);
-			_ws.send(pkg);
+			var pkg = util.pack(msg);
+			me.ws.send(pkg);
 
-			me.status('(WebSocket): Message sent...', pkg);
+			ui.status('(WebSocket): Message sent...', pkg);
 		},
 
 		/**
@@ -261,8 +310,78 @@ var app = (function(app, $, exports) {
 		 */
 
 		close: function() {
-			me.status('(WebSocket): Closing...');
-			_ws.close();
+			if (!ms.ws) {
+				ui.status('(WebSocket): is already closed.');				
+				return;
+			}
+
+			ui.status('(WebSocket): Closing...');
+			me.ws.close();
+			me.ws = null;
+		},
+
+		// ----------------------------------------------------------------------------------------
+		// EVENTS
+		// ----------------------------------------------------------------------------------------
+
+		/**
+		 * Fired when a the WebSocket connection is opened
+		 *
+		 * @event onOpen
+		 *
+		 * @return
+		 */
+
+		onOpen: function() { // WebSocket: connected.
+			var $name = ui.$name();
+
+			ui.status('(WebSocket): Connection opened...');
+			me.handshake( $name.val() );
+		},
+
+		/**
+		 * Event is fired when a message is received
+		 *
+		 * @event onMessage
+		 *
+		 * @return
+		 */
+
+		onMessage: function (MsgEvt) { // WebSocket: message received.
+			var pkg = MsgEvt.data;
+			var msg = util.unpack(pkg);
+
+			if (msg.error) {
+				ui.status('(WebSocket): Message received... however there was an ERROR in unpacking the message.', msg.error);
+				return;
+			}
+
+			me.route(msg, pkg);
+		},
+
+		/**
+		 * Event is fired when the websocket is closed
+		 *
+		 * @event onClose
+		 *
+		 * @return
+		 */
+
+		onClose: function() { // WebSocket: closed.
+			ui.status('(WebSocket): Connection closed...');
+		},
+
+		/**
+		 * Fired when a websocket error occurs...
+		 *
+		 * @event onError
+		 *
+		 * @return
+		 */
+
+		onError: function(err) { // WebSocket: error occured.
+			// console.error('WebSocket ERROR: ' + err.message);
+			ui.status('(WebSocket): Connection error...' + err.message);
 		},
 
 		// ----------------------------------------------------------------------------------------
@@ -288,21 +407,19 @@ var app = (function(app, $, exports) {
 		route: function(msg, pkg) {
 			if (!msg)
 				me.unknownMessageReceived(msg, pkg);
-
 			else
-
 			switch(msg.endpoint) {
-				case me.config.greetEndpoint:
-					me.greetReceived(msg, pkg);
+				case config.greetEndpoint:
+					me.onGreetReceived(msg, pkg);
 					break;
-				case me.config.handshakeEndpoint:
-					me.handshakeReceived(msg, pkg);
+				case config.handshakeEndpoint:
+					me.onHandshakeReceived(msg, pkg);
 					break;
 				default:
 					me.unknownMessageReceived(msg, pkg);
 			}
 
-		},//route
+		},//ROUTE
 
 		/**
 		 * The route function passes unknown messages to this function for processing. 
@@ -322,11 +439,11 @@ var app = (function(app, $, exports) {
 		 */
 
 		unknownMessageReceived: function(msg, pkg) {
-			me.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
+			ui.status('(WebSocket): UNKNOWN MESSAGE RECIEVED from Server... ', pkg);
 		},
 
 		// ----------------------------------------------------------------------------------------
-		// API
+		// GREET
 		// ----------------------------------------------------------------------------------------
 
 		/**
@@ -339,12 +456,12 @@ var app = (function(app, $, exports) {
 		 */
 
 		greet: function() {
-			me.status('(WebSocket): SENDING GREET...');
+			ui.status('(WebSocket): SENDING GREET...');
 
 			me.send({
 				  msg: 'hello',
-			 endpoint: me.config.greetEndpoint,
-				token: me.store.getToken(),
+			 endpoint: config.greetEndpoint,
+				token: store.getToken(),
 				error: null
 			});
 		},
@@ -352,7 +469,7 @@ var app = (function(app, $, exports) {
 		/**
 		 * API: The route function will route any replied 'greeting' received from the server to this function.
 		 *
-		 * @method greetReceived
+		 * @method onGreetReceived
 		 *
 		 * @param {String} msg
 		 *	The message object (in JSON format) that was sent/recieved. 
@@ -365,9 +482,13 @@ var app = (function(app, $, exports) {
 		 * @return
 		 */
 
-		greetReceived: function(msg, pkg) {
-			me.status('(WebSocket): GREET RECIEVED from Server...', pkg);
+		onGreetReceived: function(msg, pkg) {
+			ui.status('(WebSocket): GREET RECIEVED from Server...', pkg);
 		},
+
+		// ----------------------------------------------------------------------------------------
+		// HANDSHAKE
+		// ----------------------------------------------------------------------------------------
 
 		/**
 		 * API: Sends a 'handshake' message to the server. 
@@ -386,13 +507,13 @@ var app = (function(app, $, exports) {
 		 */
 
 		handshake: function(name) {
-			me.status('(WebSocket): SENDING HANDSHAKE...');
+			ui.status('(WebSocket): SENDING HANDSHAKE...');
 
 			me.send({
 				  msg: 'hello',
 				 name: name,
-			 endpoint: me.config.handshakeEndpoint,
-				token: me.store.getToken(),
+			 endpoint: config.handshakeEndpoint,
+				token: store.getToken(),
 				error: null
 			});
 		},
@@ -400,7 +521,7 @@ var app = (function(app, $, exports) {
 		/**
 		 * API: The route function will route any replied 'handshake' received from the server to this function.
 		 *
-		 * @method handshakeReceived
+		 * @method onHandshakeReceived
 		 *
 		 * @param {String} msg
 		 *	The message object (in JSON format) that was sent/recieved. 
@@ -414,80 +535,28 @@ var app = (function(app, $, exports) {
 		 * @return
 		 */
 
-		handshakeReceived: function(msg, pkg) {
-			var $token = me.config.$token();
+		onHandshakeReceived: function(msg, pkg) {
+			var $token = ui.$token();
 
-			me.status('(WebSocket): HANDSHAKE RECIEVED from Server...', pkg);
-			me.store.setToken(msg.token);
-			$token.val( msg.token );
+			ui.status('(WebSocket): HANDSHAKE RECIEVED from Server...', pkg);
+			store.setToken(msg.token);
+			$token.val(msg.token);
 		},
 
-		// ----------------------------------------------------------------------------------------
-		// EVENTS
-		// ----------------------------------------------------------------------------------------
+	};//ME
 
-		/**
-		 * Fired when a the WebSocket connection is opened
-		 *
-		 * @event onOpen
-		 *
-		 * @return
-		 */
+	// --------------------------------------------------------------------------------------------
+	// PUBLIC (CLASS PROTOTYPE)
+	// --------------------------------------------------------------------------------------------
 
-		onOpen: function() { // WebSocket: connected.
-			var $name = me.config.$name();
-
-			me.status('(WebSocket): Connection opened...');
-			_isConnected = true;
-			me.handshake( $name.val() );
-		},
-
-		/**
-		 * Event is fired when a message is received
-		 *
-		 * @event onMessage
-		 *
-		 * @return
-		 */
-
-		onMessage: function (MsgEvt) { // WebSocket: message received.
-			var pkg = MsgEvt.data;
-			var msg = me.util.unpack(pkg);
-
-			if (msg.error) {
-				me.status('(WebSocket): Message received... however there was an ERROR in unpacking the message.', msg.error);
-				return;
-			}
-
-			me.route(msg, pkg);
-		},
-
-		/**
-		 * Event is fired when the websocket is closed
-		 *
-		 * @event onClose
-		 *
-		 * @return
-		 */
-
-		onClose: function() { // WebSocket: closed.
-			me.status('(WebSocket): Connection closed...');
-		},
-
-		/**
-		 * Fired when a websocket error occurs...
-		 *
-		 * @event onError
-		 *
-		 * @return
-		 */
-
-		onError: function(err) { // WebSocket: error occured.
-			// console.error('WebSocket ERROR: ' + err.message);
-			me.status('(WebSocket): Connection error...' + err.message);
-		}
-
-	};//Sock.prototype
+	Sock.prototype = {
+		// WebSocket
+		  connect: me.connect,
+			close: me.close,
+		// API
+			greet: me.greet,
+		handshake: me.handshake,
+	}
 
 	// --------------------------------------------------------------------------------------------
 	// EXPORTS
@@ -498,11 +567,7 @@ var app = (function(app, $, exports) {
 
 	return app;
 
-})(app, $, (typeof exports !== 'undefined') ? 
-		exports : 
-		this['exports'] ? 
-			this['exports'] : 
-			this['exports'] = {} );
+})(context);
 
 // ------------------------------------------------------------------------------------------------
 // END

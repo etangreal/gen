@@ -17,7 +17,10 @@
 # -------------------------------------------------------------------------------------------------
 
 	MODULES
-		www.sitepoint.com/understanding-module-exports-exports-node-js
+		sitepoint.com/understanding-module-exports-exports-node-js
+
+	UUID
+		blog.tompawlak.org/generate-unique-identifier-nodejs-javascript
 
 	RESTful API
 		webapplog.com/intro-to-express-js-parameters-error-handling-and-other-middleware
@@ -65,12 +68,9 @@
 # JAVASCRIPT
 # -------------------------------------------------------------------------------------------------
 
-	REUSING CODE - RUN CODE ON NODE & BROWSER
+	SHARE CODE: BROWSER & NODE
 		matteoagosti.com/blog/2013/02/24/writing-javascript-modules-for-both-browser-and-node
 		caolanmcmahon.com/posts/writing_for_node_and_the_browser
-
-	UUID
-		blog.tompawlak.org/generate-unique-identifier-nodejs-javascript
 
 	TABS TUTORIAL
 		jacklmoore.com/notes/jquery-tabs

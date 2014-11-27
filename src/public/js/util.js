@@ -47,6 +47,19 @@
 		},
 
 		/**
+		 * Stringifies a JSON object
+		 *
+		 * @method pack
+		 *
+		 * @param {String} pkg JSON object that will be stringified.
+		 *
+		 */
+
+		pack: function(msg) {
+			return JSON.stringify(msg);
+		},
+
+		/**
 		 * Unpacks a stringified JSON object. If an error occurs it will return error object
 		 *
 		 * @method unpack
@@ -63,19 +76,6 @@
 			} catch (e) {
 				return {error:'Invalid JSON object.'};
 			}
-		},
-
-		/**
-		 * Stringifies a JSON object
-		 *
-		 * @method pack
-		 *
-		 * @param {String} pkg JSON object that will be stringified.
-		 *
-		 */
-
-		pack: function(msg) {
-			return JSON.stringify(msg);
 		},
 
 	};//Util.prototype

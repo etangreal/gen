@@ -18,6 +18,25 @@
 	github.com/kof/node-qunit
 
 # -------------------------------------------------------------------------------------------------
+# NODE-INSPECTOR
+# -------------------------------------------------------------------------------------------------
+
+	#install
+	npm install -g node-inspector
+
+	#start debugging
+	node-debug app.js
+
+	#start with nodemon and debug
+	node-inspector & nodemon --debug app.js
+
+	#debug
+	http://localhost:8080/debug?port=5858
+
+	#code
+	github.com/node-inspector/node-inspector
+
+# -------------------------------------------------------------------------------------------------
 # WEBSOCKETS
 # -------------------------------------------------------------------------------------------------
 
