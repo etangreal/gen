@@ -443,7 +443,7 @@ var app = (function(context) {
 
 			onHandshakeAlways: function(dataOrXhr, status, xhrOrError) {
 				// console.log( "rest.user.handshake: finished" );
-			},
+			}
 
 		},//ME.USER
 

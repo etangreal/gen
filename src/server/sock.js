@@ -109,12 +109,6 @@ var context = (function(context) {
 			prefix = prefix || '';
 			msg = msg || '';
 
-			// if (prefix && prefix !== '')
-			// 	console.log(prefix);
-
-			// if (msg && msg !== '')
-			// 	console.log(' --->', msg);
-
 			console.log('STATUS:', prefix, msg);
 		},
 
@@ -323,7 +317,7 @@ var context = (function(context) {
 
 			},//HANDSHAKE
 
-		},//USER
+		}//USER
 
 	};//ME
 
@@ -332,12 +326,15 @@ var context = (function(context) {
 	// --------------------------------------------------------------------------------------------
 
 	Sock.prototype = {
+		//WebSocket
 		onConnect: me.onConnect,
 
+		//API
 		user: {
 				greet: me.greet,
 			handshake: me.handshake
 		}//USER
+
 	}//SOCK.PROTOTYPE
 
 	// --------------------------------------------------------------------------------------------

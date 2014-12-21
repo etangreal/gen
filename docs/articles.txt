@@ -64,6 +64,84 @@
  			tech.pro/tutorial/1729/easy-javascript-documentation-with-yuidocs-and-gruntjs
  			codebelt.com/javascript/yuidoc-javascript-documentation-tutorial-gruntjs
 
+ 	wayfinder.is
+
+# -------------------------------------------------------------------------------------------------
+# ARCHITECTURE
+# -------------------------------------------------------------------------------------------------
+
+	Base Library, Application Core, Sandbox, Modules
+
+		github.com/mamoo/Core-Sandbox-Module-JS
+		addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript
+		rmurphey.com/blog/2009/10/15/using-objects-to-organize-your-code
+		adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html
+
+		scalejs.com/architecture.html
+
+		Scalable JavaScript
+			slideshare.net/nzakas/scalable-javascript-application-architecture
+		Error Handling
+			slideshare.net/nzakas/enterprise-javascript-error-handling-presentation
+		High Performance JavaScript
+			josephsmarr.com/2007/07/25/high-performance-javascript-oscon-2007
+
+		microsoft.com/en-GB/developers/articles/scalable-javascript-application-architecture
+		joezimjs.com/javascript/scalable-javascript-applications
+
+	Large Scale JavaScript
+		addyosmani.com/largescalejavascript
+		rmurphey.com/blog/2010/08/27/code-org-take-2-structuring-javascript-applications
+		michaux.ca/articles/mvc-architecture-for-javascript-applications
+		msdn.microsoft.com/en-us/magazine/ff706600.aspx
+
+		Mixins
+			[N.B]javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins
+		Strict Mode
+			javascriptweblog.wordpress.com/2011/05/03/javascript-strict-mode
+
+	joezimjs.com/javascript/scalable-javascript-applications
+		aurajs.com
+		github.com/aurajs
+
+	scaleapp.org
+	simple-talk.com/content/print.aspx?article=2024
+
+	<nczonline.net, Nicholas Zakas>
+
+	-----------------------------------------------------------------------------------------------
+	SEARCH: "Writing Modular JavaScript"
+	-----------------------------------------------------------------------------------------------
+
+	Writing Modular JS
+		addyosmani.com/writing-modular-js
+
+	YUI Library
+		youtube.com/user/yuilibrary
+		yuilibrary.com/yui/docs/yui
+
+	SandBox Pattern
+		stackoverflow.com/questions/3628649/javascript-self-contained-sandbox-events-and-client-side-stack
+
+	aurajs.com
+	github.com/aurajs
+
+ 	lostechies.com/derickbailey/2012/04/19/decoupling-backbone-apps-from-websockets
+
+ 	Angry Birds of Modern JavaScript Development
+ 		youtube.com/watch?v=v2u6psLRHE4
+
+ 	FRAMEWORKS
+ 		infoq.com/research/top-javascript-mvc-frameworks
+ 		simple-talk.com/content/print.aspx?article=2024
+
+# -------------------------------------------------------------------------------------------------
+# FRAMEWORKS
+# -------------------------------------------------------------------------------------------------
+
+	
+ 		derbyjs.com
+
 # -------------------------------------------------------------------------------------------------
 # JAVASCRIPT
 # -------------------------------------------------------------------------------------------------
@@ -74,6 +152,16 @@
 
 	TABS TUTORIAL
 		jacklmoore.com/notes/jquery-tabs
+
+	CLONE vs COPY
+
+		stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+		stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object
+		stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object/5344074#5344074
+		oranlooney.com/functional-javascript
+
+		scriptcult.com/subcategory_1/article_414-copy-or-clone-javascript-array-object.html
+		davidwalsh.name/javascript-clone
 
 	ACCESSING REST API FROM JAVASCRIPT
 		api.jquery.com/jquery.ajax
@@ -111,8 +199,13 @@
 # WEBSOCKETS
 # -------------------------------------------------------------------------------------------------
 
+ARTICLES:
+
+	nbevans.wordpress.com/2011/12/16/websockets-versus-rest-fight
+	lostechies.com/chrismissal/2013/08/06/browser-wars-websockets-vs-ajax
+
 CLIENT-SIDE:
-	
+
 	tutorialspoint.com/html5/html5_websocket.htm
 	developer.mozilla.org/en-US/docs/Web/API/WebSocket
 	developer.mozilla.org/en-US/docs/WebSockets/Writing_WebSocket_client_applications
@@ -125,7 +218,7 @@ CLIENT-SIDE:
 	NodeJS Websocket how to reconnect when server restarts
 		stackoverflow.com/questions/19691996/nodejs-websocket-how-to-reconnect-when-server-restarts
 
-	www.html5rocks.com/en/tutorials/websockets/basics
+	html5rocks.com/en/tutorials/websockets/basics
 
 SERVER-SIDE:
 
@@ -134,6 +227,9 @@ SERVER-SIDE:
 
 	NodeJS Websocket how to reconnect when server restarts
 		stackoverflow.com/questions/19691996/nodejs-websocket-how-to-reconnect-when-server-restarts
+
+STATS:
+	blog.arungupta.me/2014/02/rest-vs-websocket-comparison-benchmarks
 
 # -------------------------------------------------------------------------------------------------
 # QUNIT

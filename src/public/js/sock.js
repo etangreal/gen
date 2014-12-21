@@ -541,7 +541,7 @@ var app = (function(context) {
 			ui.status('(WebSocket): HANDSHAKE RECIEVED from Server...', pkg);
 			store.setToken(msg.token);
 			$token.val(msg.token);
-		},
+		}
 
 	};//ME
 

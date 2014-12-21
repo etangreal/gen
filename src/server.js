@@ -8,7 +8,7 @@ var	express 	= require('express'),
 	http 		= require('http'),
 	ws 			= require('ws');
 
-	app 		= express(),
+	app 		= express(), //	Declared Globally
 	app.sock 	= new (require('./server/sock').Sock)();
 	app.rest 	= new (require('./server/rest').Rest)();
 
@@ -24,56 +24,11 @@ app.use( bodyParser.urlencoded({ 	// to support URL-encoded bodies
 }));
 
 // ------------------------------------------------------------------------------------------------
-// REST ENDPOINTS
+// ENDPOINTS/ROUTES
 // ------------------------------------------------------------------------------------------------
 
-app.param('token', function(req, res, next, token) {
-	req.token = token;
-	next();
-});
-
-// ------------------------------------------------------------------------------------------------
-
-app.post('/user/greet/:token?', function(req, res) {
-	res.json( app.rest.greet(req.body, req.token) );
-});
-
-// ------------------------------------------------------------------------------------------------
-
-app.post('/user/handshake/:token?', function(req, res) { 
-	res.json( app.rest.handshake(req.body, req.token ) );
-});
-
-// ------------------------------------------------------------------------------------------------
-// ROUTES
-// ------------------------------------------------------------------------------------------------
-
-app.get('/', function(req, res) {
-	console.log("app.get '/'", "redirecting to index.html" );
-	res.redirect('http://localhost:8080/index.html');
-});
-
-// ------------------------------------------------------------------------------------------------
-
-app.get('/test', function(req, res) {
-	console.log("app.get '/test", "redirecting to test.html");
-	res.redirect('http://localhost:8080/test.html');
-});
-
-// ------------------------------------------------------------------------------------------------
-// ROUTE ERRORS
-// ------------------------------------------------------------------------------------------------
-
-app.use(function(req, res, next) {  
-  res.send(404, 'Sorry cant find that!');
-});
-
-// ------------------------------------------------------------------------------------------------
-
-app.use(function(err, req, res, next){
-  console.error(err.stack);
-  res.send(500, 'Something broke!');
-});
+require('./server/endpoints')(app);
+require('./server/routes')(app);
 
 // ------------------------------------------------------------------------------------------------
 // SERVERS

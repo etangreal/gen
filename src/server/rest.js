@@ -100,12 +100,6 @@ var context = (function(context) {
 			prefix 	= prefix || '';
 			msg 	= msg 	 || '';
 
-			// if (prefix && prefix !== '')
-			// 	console.log(prefix);
-
-			// if (msg && msg !== '')
-			// 	console.log(' --->', msg);
-
 			console.log('STATUS:', prefix, msg);
 		},
 
@@ -200,7 +194,8 @@ var context = (function(context) {
 
 			me.status('(WebSocket): Replying to HANDSHAKE ...', util.pack(reply));
 			return reply
-		}
+
+		}//HANDSHAKE
 
 	}//ME
 
